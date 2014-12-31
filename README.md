@@ -2,6 +2,15 @@ Project-V
 =========
 
 The future of telepresence
+### App Info
+* Endpoint: https://dry-basin-8527.herokuapp.com/
+* Flow:
+  -  User1 visits the site, a room called "foo"
+     is automatically created for the signalling
+     phase required for a WebRTC communication
+  -  User2 visits the site, sends an "offer" to
+     User1. User1 sends an "answer"
+  -  User1, User2 start exchanging audio, video streams
 
 ### Useful resources
 * https://bitbucket.org/webrtc/codelab

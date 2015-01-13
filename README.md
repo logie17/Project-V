@@ -26,6 +26,7 @@ The future of telepresence
 * https://talky.io/
 * http://tringgr.com/
 * https://www.respoke.io/#home
+* http://www.higuys.io/
 
 ### TODO
 * Tie up a TMUX remote sharing session to the video session

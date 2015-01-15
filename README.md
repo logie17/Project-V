@@ -2,6 +2,14 @@ Project-V
 =========
 
 The future of telepresence
+### Install Locally
+
+In order to get started first install the project with the "Go" command:
+
+```bash
+go get github.com/logie17/Project-V
+```
+
 ### App Info
 * `go run server.go routes.go`
 * Endpoint: http://localhost:8100

@@ -3,7 +3,8 @@ Project-V
 
 The future of telepresence
 ### App Info
-* Endpoint: https://dry-basin-8527.herokuapp.com/
+* `go run server.go routes.go`
+* Endpoint: http://localhost:8100
 * Flow:
   -  User1 visits the site, a room called "foo"
      is automatically created for the signalling

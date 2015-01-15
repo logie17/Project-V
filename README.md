@@ -12,6 +12,11 @@ The future of telepresence
   -  User2 visits the site, sends an "offer" to
      User1. User1 sends an "answer"
   -  User1, User2 start exchanging audio, video streams
+* Dir structure for go:
+  - Choose a workspace, this will be a dir where all your go projects will live
+  - I have problems putting it in /opt/code so now I have it in ~/code
+
+
 
 ### Useful resources
 * https://bitbucket.org/webrtc/codelab

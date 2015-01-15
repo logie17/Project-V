@@ -15,7 +15,31 @@ The future of telepresence
 * Dir structure for go:
   - Choose a workspace, this will be a dir where all your go projects will live
   - I have problems putting it in /opt/code so now I have it in ~/code
-
+```
+~/code
+├── bin
+├── pkg
+│   └── linux_amd64
+│       ├── github.com
+│       │   ├── flosch
+│       │   └── gorilla
+│       └── golang.org
+│           └── x
+└── src
+    ├── github.com
+    │   ├── flosch
+    │   │   └── pongo2
+    │   └── gorilla
+    │       ├── context
+    │       └── mux
+    ├── golang.org
+    │   └── x
+    └── Project-V
+        ├── public
+        │   └── js
+        │       └── lib
+        └── templates
+```
 
 
 ### Useful resources

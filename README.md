@@ -21,6 +21,7 @@ The future of telepresence
 * https://github.com/HenrikJoreteg/SimpleWebRTC
 * https://www.webrtc-experiment.com/RTCMultiConnection/MultiRTC/
 * https://github.com/muaz-khan/WebRTC-Experiment/tree/master/MultiRTC-simple
+* android: http://www.webrtc.org/native-code/android
 
 ### Existing app that use WebRTC
 * https://talky.io/
@@ -36,3 +37,15 @@ The future of telepresence
 * Implement functionality to record/store data
 * Use 3rd party api like http://clarify.io/ to search through videos
 * Come up with Jira integration
+
+## Product ideas:
+
+### Design
+* https://www.circle.com/en
+* https://mapbox.com
+* http://emojiary.com/
+* boxy is better, rounded corners are soo 2008
+
+### Conversion
+* make them feel special e.g. ("Be Founding Member #17" on a signup page), stolen from https://thegrid.io/
+

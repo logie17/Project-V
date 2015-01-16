@@ -49,6 +49,8 @@ go get github.com/logie17/Project-V
         └── templates
 ```
 
+### Running with docker
+*	`sudo docker -d`
 
 ### Useful resources
 * https://bitbucket.org/webrtc/codelab

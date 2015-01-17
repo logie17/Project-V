@@ -2,6 +2,14 @@ Project-V
 =========
 
 The future of telepresence
+### Install Locally
+
+In order to get started first install the project with the "Go" command:
+
+```bash
+go get github.com/logie17/Project-V
+```
+
 ### App Info
 * `go run server.go routes.go`
 * Endpoint: http://localhost:8100
@@ -41,11 +49,18 @@ The future of telepresence
         └── templates
 ```
 
+### Running with docker
+*	Run docker daemon: `sudo docker -d`
+* Build it: `sudo docker build -t project-v .`
+* Run it: `sudo docker run --publish 49160:8100  project-v`
+* Test: `curl localhost:49160`
 
 ### Useful resources
 * https://bitbucket.org/webrtc/codelab
 * http://www.html5rocks.com/en/tutorials/webrtc/basics/
 * https://docs.google.com/document/d/1hNK15_cNx3CpYsro2TKwEbdFxLv5WFe8djGHdFeZBks/edit#heading=h.ewci7q4yqbd1
+* google i/o webrtc talk FF to signaling part http://youtu.be/p2HzZkd2A40?t=16m30s
+* MCU server http://lynckia.com/licode/index.html
 
 ### Amazing Github Example projects
 * https://github.com/HenrikJoreteg/SimpleWebRTC

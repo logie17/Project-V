@@ -14,6 +14,7 @@ The future of telepresence
 Short term:
 * Tie up a TMATE remote sharing session to the video session
 * Support multiuser conference (MCU)
+* [oauth2 (github/gitbucket/...)](https://github.com/golang/oauth2)
 
 Medium term:
 * Implement chat

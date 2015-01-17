@@ -12,6 +12,7 @@ The future of telepresence
 
 ### Possible features
 Short term:
+* data store
 * Tie up a TMATE remote sharing session to the video session
 * Support multiuser conference (MCU)
 * [oauth2 (github/gitbucket/...)](https://github.com/golang/oauth2)

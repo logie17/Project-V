@@ -1,10 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gorilla/mux"
-	"net/http"
 	"github.com/logie17/Project-V/config"
-        "fmt"
+	"net/http"
 )
 
 func main() {
@@ -15,4 +15,5 @@ func main() {
 	http.Handle("/", r)
 	fmt.Printf("Starting on Port: %v\n", configuration.Port)
 	http.ListenAndServe(fmt.Sprintf(":%s", configuration.Port), nil)
+	http.ListenAndServe(fmt.Sprintf("[::]:%s", configuration.Port), nil)
 }

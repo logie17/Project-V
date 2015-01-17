@@ -12,7 +12,8 @@ module.exports = function(grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 			clean: {
-				vendor: ["public/vendor/"],
+				bower: ["public/vendor/"],
+				jsvendor: ["public/js/vendor/"],
 			},
 			// ========== CSS ==========
 			csslint: {
@@ -132,7 +133,7 @@ module.exports = function(grunt) {
 		// test only
 		grunt.registerTask('test', ['csslint', 'jshint']);
 		// JS
-		grunt.registerTask('js', ['bower', 'copy', 'clean:vendor']);
+		grunt.registerTask('js', ["clean:jsvendor", "bower", "copy", "clean:bower"]);
 		// CSS
 		grunt.registerTask('css', ['csslint', 'cssmin']);
 };

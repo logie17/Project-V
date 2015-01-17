@@ -1,16 +1,16 @@
 package main
 
 import (
-	"testing"
-	"net/http/httptest"
-	"net/http"
 	"io/ioutil"
+	"net/http"
+	"net/http/httptest"
 	"strings"
+	"testing"
 )
 
 func TestIndexHandler(t *testing.T) {
 	resp := httptest.NewRecorder()
-	
+
 	req, err := http.NewRequest("GET", "", nil)
 	if err != nil {
 		t.Fatal(err)

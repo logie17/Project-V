@@ -84,14 +84,4 @@ go get github.com/logie17/Project-V
 * Use 3rd party api like http://clarify.io/ to search through videos
 * Come up with Jira integration
 
-## Product ideas:
-
-### Design
-* https://www.circle.com/en
-* https://mapbox.com
-* http://emojiary.com/
-* boxy is better, rounded corners are soo 2008
-
-### Conversion
-* make them feel special e.g. ("Be Founding Member #17" on a signup page), stolen from https://thegrid.io/
-
+## [Product ideas](https://github.com/logie17/Project-V/blob/master/docs/PRODUCT.md):

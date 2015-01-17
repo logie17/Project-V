@@ -1,4 +1,4 @@
-Project-V
+Product Ideas
 =========
 
 The future of telepresence
@@ -9,8 +9,6 @@ The future of telepresence
 * https://www.respoke.io/#home
 * http://www.higuys.io/
 * https://vline.com/
-
-## Product ideas:
 
 ### Possible features
 Short term:

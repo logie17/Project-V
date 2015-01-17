@@ -42,6 +42,6 @@ Long term:
 ### Names:
 * coderage.io
 * pairparty.io
+* codepair.io
 * pairwith.me (taken)
 * buildwith.me (taken)
-

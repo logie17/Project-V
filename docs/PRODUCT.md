@@ -13,14 +13,22 @@ The future of telepresence
 ## Product ideas:
 
 ### Possible features
+Short term:
 * Tie up a TMATE remote sharing session to the video session
+* Support multiuser conference (MCU)
+
+Medium term:
 * Implement chat
+* Implement functionality to record/store data (MCU)
+
+Long term:
 * Ability to Whiteboard(http://socket.io/get-started/whiteboard/)
-* Support multiuser conference
-* Implement functionality to record/store data
 * Use 3rd party api like http://clarify.io/ to search through videos
 * Come up with Jira integration
-* 
+* Native mobile apps
+* Expand beyond the developer demographic
+
+
 ### Design
 * https://www.circle.com/en
 * https://mapbox.com

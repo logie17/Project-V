@@ -50,7 +50,10 @@ go get github.com/logie17/Project-V
 ```
 
 ### Running with docker
-*	`sudo docker -d`
+*	Run docker daemon: `sudo docker -d`
+* Build it: `sudo docker build -t project-v .`
+* Run it: `sudo docker run --publish 49160:8100  project-v`
+* Test: `curl localhost:49160`
 
 ### Useful resources
 * https://bitbucket.org/webrtc/codelab

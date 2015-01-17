@@ -4,21 +4,18 @@ module.exports = function(grunt) {
 	// includes
 	grunt.loadNpmTasks('grunt-bower-task');
 	grunt.loadNpmTasks('grunt-contrib-clean');
+	grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks('grunt-contrib-csslint');
 	grunt.loadNpmTasks('grunt-contrib-cssmin');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
-	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-bump');
 	// Project configuration.
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-        	clean: {
-        		js: ["dist/js"],
-			css: ["dist/css"],
-			vendor: ["vendor"]
-        	},
-        // ========== CSS ==========
-        csslint: {
+			clean: {
+				vendor: ["public/vendor/"],
+			},
+			// ========== CSS ==========
+			csslint: {
 					src: ['css/km.css'],
 					options: {
 						ids: false
@@ -108,40 +105,34 @@ module.exports = function(grunt) {
             }
         },
 
-        uglify: {
-					dist: {
-						files: {
-          		'dist/js/picturefill.min.js': 'vendor/picturefill/picturefill.js',
-							'dist/js/km.min.js' : 'js/km.js'
-						},
-						options:{
-							compress: true,
-							report: 'gzip'
-						}
-			    }
-				},
 				bower: {
-	    		install: {
-	    		  options: {
-	    		    cleanBowerDir: true,
-		  				layout: 'byType',
-		  				targetDir: 'vendor/',
-		  				verbose: true
-	    		  }
-	    		}
-	  		}
-        
+					install: {
+						options: {
+							cleanBowerDir: true,
+							layout: 'byType',
+							targetDir: 'public/vendor/',
+							verbose: true
+						}
+					}
+				},
+				copy: {
+					jsvendor: {
+						src: 'public/vendor/requirejs/require.js',
+						dest: 'public/js/vendor/require.js'
+					},
+				}
+
 				// ========== END JS ==========
     });
 
     // Default task: the works
-		grunt.registerTask('default', ['clean', 'bower', 'csslint', 'jshint', 'cssmin', 'uglify']);
+		grunt.registerTask('default', ['clean', 'bower', 'csslint', 'jshint', 'cssmin']);
 		// Make it
-		grunt.registerTask('make', ['clean', 'cssmin', 'uglify']);
+		grunt.registerTask('make', ['clean', 'cssmin']);
 		// test only
 		grunt.registerTask('test', ['csslint', 'jshint']);
 		// JS
-		grunt.registerTask('js', ['jshint', 'uglify']);
+		grunt.registerTask('js', ['bower', 'copy', 'clean:vendor']);
 		// CSS
 		grunt.registerTask('css', ['csslint', 'cssmin']);
 };

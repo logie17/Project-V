@@ -30,3 +30,8 @@ node_modules
 
 Project-V
 *~
+
+# front end crap
+public/vendor
+public/js/vendor
+public/css/vendor

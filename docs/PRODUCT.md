@@ -38,3 +38,10 @@ Long term:
 ### Conversion
 * make them feel special e.g. ("Be Founding Member #17" on a signup page), stolen from https://thegrid.io/
 
+
+### Names:
+* coderage.io
+* pairparty.io
+* pairwith.me (taken)
+* buildwith.me (taken)
+

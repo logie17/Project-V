@@ -1,7 +1,8 @@
-Project-V
+Code
 =========
 
 The future of telepresence
+
 ### Install Locally
 
 In order to get started first install the project with the "Go" command:
@@ -67,21 +68,3 @@ go get github.com/logie17/Project-V
 * https://www.webrtc-experiment.com/RTCMultiConnection/MultiRTC/
 * https://github.com/muaz-khan/WebRTC-Experiment/tree/master/MultiRTC-simple
 * android: http://www.webrtc.org/native-code/android
-
-### Existing app that use WebRTC
-* https://talky.io/
-* http://tringgr.com/
-* https://www.respoke.io/#home
-* http://www.higuys.io/
-* https://vline.com/
-
-### TODO
-* Tie up a TMUX remote sharing session to the video session
-* Implement chat
-* Ability to Whiteboard(http://socket.io/get-started/whiteboard/)
-* Support multiuser conference
-* Implement functionality to record/store data
-* Use 3rd party api like http://clarify.io/ to search through videos
-* Come up with Jira integration
-
-## [Product ideas](https://github.com/logie17/Project-V/blob/master/docs/PRODUCT.md):

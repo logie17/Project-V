@@ -118,8 +118,10 @@ module.exports = function(grunt) {
 				},
 				copy: {
 					jsvendor: {
-						src: 'public/vendor/requirejs/require.js',
-						dest: 'public/js/vendor/require.js'
+						flatten: true,
+						expand: true,
+						src: ['public/vendor/requirejs/require.js', 'public/vendor/jquery/jquery.js'],
+						dest: 'public/js/vendor/'
 					},
 				}
 

@@ -3,6 +3,7 @@
 	"version": "v3.0.0",
 	"dependencies": {
     "normalize.css": "",
-    "requirejs": ""
+    "requirejs": "",
+    "jquery": ""
   }
 }

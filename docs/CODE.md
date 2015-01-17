@@ -57,11 +57,11 @@ go get github.com/logie17/Project-V
 * Test: `curl localhost:49160`
 
 ### Useful resources
-* https://bitbucket.org/webrtc/codelab
-* http://www.html5rocks.com/en/tutorials/webrtc/basics/
-* https://docs.google.com/document/d/1hNK15_cNx3CpYsro2TKwEbdFxLv5WFe8djGHdFeZBks/edit#heading=h.ewci7q4yqbd1
-* google i/o webrtc talk FF to signaling part http://youtu.be/p2HzZkd2A40?t=16m30s
-* MCU server http://lynckia.com/licode/index.html
+* [Tutorial in js](https://bitbucket.org/webrtc/codelab)
+* [HTML5 Rocks](http://www.html5rocks.com/en/tutorials/webrtc/basics/)
+* [Collection of WebRTC related links](https://docs.google.com/document/d/1hNK15_cNx3CpYsro2TKwEbdFxLv5WFe8djGHdFeZBks/edit#heading=h.ewci7q4yqbd1)
+* [google i/o webrtc talk FF to signaling part](http://youtu.be/p2HzZkd2A40?t=16m30s)
+* [MCU server](http://lynckia.com/licode/index.htm)
 * [PubNub clients for Go](https://github.com/pubnub/go)
 * [Pre built service in Go](https://github.com/mehrvarz/rtcchat2)
 

@@ -13,7 +13,8 @@ func main() {
 	r.HandleFunc("/", indexHandler)
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 	http.Handle("/", r)
-	fmt.Printf("Starting on Port: %v\n", configuration.Port)
+	fmt.Printf("Starting on Port: :%v\n", configuration.Port)
+	fmt.Printf("Starting on Port: [::]:%v\n", configuration.Port)
 	http.ListenAndServe(fmt.Sprintf(":%s", configuration.Port), nil)
 	http.ListenAndServe(fmt.Sprintf("[::]:%s", configuration.Port), nil)
 }

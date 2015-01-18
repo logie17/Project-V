@@ -30,3 +30,8 @@ node_modules
 
 Project-V
 *~
+
+# random go crap
+Godeps
+pkg
+src

@@ -2,6 +2,7 @@
 
 APP_NAME = Project-V
 EXEC_NAME = ./$(APP_NAME)
+GOPATH= $(shell pwd)
 
 $(EXEC_NAME):
 	go build
@@ -16,6 +17,7 @@ test:
 
 dep:
 	go get github.com/gorilla/mux
+	go get github.com/flosch/pongo2 # what the hell is this?
 
 clean:
 	go clean

@@ -14,13 +14,20 @@
     <![endif]-->
   </head>
   <body>
-    <h1>Hello, world!</h1>
+		{% block header %}{% include "includes/header.html" %}{% endblock %}
+		<div class="content">
+			{% block content %}{% endblock %}
+		</div>
+		{% block footer %}{% include "includes/footer.html" %}{% endblock %}
+
 
 		<script data-main="/js/main.js" src="/js/vendor/require.js"></script>
+		<script src="/js/vendor/push.js"></script>
 		<!--
 		<script src='/socket.io/socket.io.js'></script>
 		<script src='js/lib/adapter.js'></script>
 		<script src='js/main.js'></script>
 		-->
-  </body>
+  	{% block pagejs %}{% endblock %}
+	</body>
 </html>

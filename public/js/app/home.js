@@ -1,3 +1,3 @@
 define(["jquery"], function($){
-	$("body").html("<h1>Pairparty.io</h1>");	
+	$("body").append("<h2>hello from require</h2>");	
 });

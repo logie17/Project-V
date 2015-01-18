@@ -5,12 +5,23 @@ import (
 	"net/http"
 )
 
-var index_tmpl = pongo2.Must(pongo2.FromFile("templates/index.html"))
+var index_page_tmpl = pongo2.Must(pongo2.FromFile("templates/pages/index.html"))
+var index_partial_tmpl = pongo2.Must(pongo2.FromFile("templates/partials/index.html"))
 
 // TODO: test this sucker and figure out how to mock net/http
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	err := index_tmpl.ExecuteWriter(pongo2.Context{"query": r.FormValue("query")}, w)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+	ajax := r.Header.Get("X-PUSH")
+	if ajax != "" {
+		// serve the partial
+		err := index_partial_tmpl.ExecuteWriter(pongo2.Context{"query": r.FormValue("query")}, w)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	} else {
+		// serve a page
+		err := index_page_tmpl.ExecuteWriter(pongo2.Context{"query": r.FormValue("query")}, w)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
 	}
 }

@@ -2,6 +2,7 @@
 
 APP_NAME = Project-V
 EXEC_NAME = ./$(APP_NAME)
+GOPATH= $(shell pwd)
 
 $(EXEC_NAME):
 	go build

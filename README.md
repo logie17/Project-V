@@ -9,7 +9,8 @@ The future of telepresence
 ## What are you working on?
 ### lbell
 ### kmulvey
-* DI for FE code
+* ~~DI for FE code~~
+* ~~template inheritance and PUSH.js support~~
 * tests for FE code
 * logging infra for all code
 * Continuous deployment through build system

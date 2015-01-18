@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"./config"
+	"github.com/logie17/Project-V/config"
 	"net/http"
 )
 

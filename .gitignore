@@ -35,3 +35,8 @@ Project-V
 public/vendor
 public/js/vendor
 public/css/vendor
+
+# random go crap
+Godeps
+pkg
+src

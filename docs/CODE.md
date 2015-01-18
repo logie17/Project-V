@@ -8,6 +8,7 @@ The future of telepresence
 In order to get started first install the project with the "Go" command:
 
 ```bash
+git config --global url."git@github.com:".insteadOf "https://github.com/"
 go get github.com/logie17/Project-V
 ```
 

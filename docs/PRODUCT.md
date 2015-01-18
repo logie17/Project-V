@@ -12,8 +12,10 @@ The future of telepresence
 
 ### Possible features
 Short term:
+* data store
 * Tie up a TMATE remote sharing session to the video session
 * Support multiuser conference (MCU)
+* [oauth2 (github/gitbucket/...)](https://github.com/golang/oauth2)
 
 Medium term:
 * Implement chat
@@ -36,3 +38,10 @@ Long term:
 ### Conversion
 * make them feel special e.g. ("Be Founding Member #17" on a signup page), stolen from https://thegrid.io/
 
+
+### Names:
+* coderage.io
+* pairparty.io
+* codepair.io
+* pairwith.me (taken)
+* buildwith.me (taken)

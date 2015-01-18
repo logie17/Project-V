@@ -1,5 +1,4 @@
 requirejs.config({
-	basrUrl: "./",
 	paths: {
 		jquery: "vendor/jquery"
 	}
@@ -7,4 +6,5 @@ requirejs.config({
 require(['jquery'], function( $ ) {
 	    console.log( $ ) // OK
 });
-require("app/home");
+require(["app/home"], function( $ ) {
+});

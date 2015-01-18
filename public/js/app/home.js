@@ -1,3 +1,3 @@
-define(["jquery"], function(require, $){
+define(["jquery"], function($){
 	$("body").text("require works");	
 });

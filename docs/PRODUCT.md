@@ -45,3 +45,7 @@ Long term:
 * codepair.io
 * pairwith.me (taken)
 * buildwith.me (taken)
+
+### Design Ideas
+
+* Possibly make this look like slack/hipchat

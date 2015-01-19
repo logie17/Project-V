@@ -5,8 +5,13 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/gorilla/context"
 	"github.com/logie17/Project-V/config"
+	"github.com/logie17/Project-V/model"
 	"net/http"
 	"log"
+	"time"
+	"github.com/jinzhu/gorm"
+	_ "github.com/mattn/go-sqlite3"
+
 )
 
 type key int
@@ -16,11 +21,17 @@ func main() {
 	r := mux.NewRouter()
 	configuration := config.LoadConfig()
 
+	db, err := setupDB(configuration)
+
+	if err != nil {
+		log.Println("Uh, can't open the database: %s", err.Error())
+	}
+	
 	r.HandleFunc("/", indexHandler)
 	r.HandleFunc("/login", loginHandler)
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 
-	http.Handle("/", Middleware(r))
+	http.Handle("/", Middleware(r, db))
 
 	fmt.Printf("Starting on Port: [::]:%v\n", configuration.Port)
 	http.ListenAndServe(fmt.Sprintf("[::]:%s", configuration.Port), nil)
@@ -28,11 +39,31 @@ func main() {
 
 // Apparently gorrilla doesn't support some sort
 // of route chaining or middleware :-(
-func Middleware(h http.Handler) http.Handler {
+func Middleware(h http.Handler, db * gorm.DB) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		context.Set(r, UserKey, "foobar")
+		user := model.User{Name: "Jinzhu", Username: "foo", CreatedAt: time.Now()}
+		db.NewRecord(user) // => true
+		db.Save(&user)
+		context.Set(r, UserKey, user.Name)
 		log.Println("middleware begin")
 		h.ServeHTTP(w, r)
 		log.Println("middleware end")
 	})
+}
+
+func setupDB(configuration *config.Configuration) (*gorm.DB, error) {
+	db, err := gorm.Open("sqlite3", configuration.Database)
+
+	if err != nil {
+		return &db, err
+	}
+
+	db.DB().SetMaxIdleConns(10)
+	db.DB().SetMaxOpenConns(100)
+	db.SingularTable(true)
+	
+	db.CreateTable(&model.User{})
+	
+	return &db, err
+
 }

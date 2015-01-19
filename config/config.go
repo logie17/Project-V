@@ -8,11 +8,12 @@ import (
 
 type Configuration struct {
 	Port string
+	Database string
 }
 
 var fileName = "./config.json"
 
-func LoadConfig () Configuration {
+func LoadConfig () *Configuration {
 	configuration := Configuration{}
 
 	if _, err := os.Stat(fileName); err == nil {
@@ -24,5 +25,5 @@ func LoadConfig () Configuration {
 		}
 	}
 
-	return configuration
+	return &configuration
 }

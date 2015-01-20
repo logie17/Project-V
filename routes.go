@@ -2,13 +2,14 @@ package main
 
 import (
 	"github.com/flosch/pongo2"
-	"net/http"
 	"github.com/gorilla/context"
 	"log"
+	"net/http"
 )
 
 var index_page_tmpl = pongo2.Must(pongo2.FromFile("templates/pages/index.html"))
 var index_partial_tmpl = pongo2.Must(pongo2.FromFile("templates/partials/index.html"))
+var flex_page_tmpl = pongo2.Must(pongo2.FromFile("templates/pages/flex.html"))
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
 	ajax := r.Header.Get("X-PUSH")
@@ -34,5 +35,11 @@ func loginHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
 
+func flexHandler(w http.ResponseWriter, r *http.Request) {
+	err := flex_page_tmpl.ExecuteWriter(pongo2.Context{"query": r.FormValue("query")}, w)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
 }

@@ -15,5 +15,4 @@ The future of telepresence
 * logging infra for all code
 * Continuous deployment through build system
 
-
 ### nkajjam

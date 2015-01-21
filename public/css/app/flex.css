@@ -1,8 +1,10 @@
+html, body, .content, .flex-container{
+ 	height: 100%; 
+}
 .flex-container {
   padding: 0;
   margin: 0;
   list-style: none;
- 	height: 100%; 
   display: flex;
   flex-flow: row wrap;
 }
@@ -19,7 +21,7 @@
 }
 /* two items */
 .flex-item:first-child:nth-last-child(2),
-.flex-item:first-child:nth-last-child(2) ~ li,
+.flex-item:first-child:nth-last-child(2) ~ li{
     width: 50%;
     height: 100%;
 }
@@ -32,6 +34,7 @@
     height: 50%;
 }
 /* five-six items */
+.flex-item:first-child:nth-last-child(3) ~ .flex-item:nth-child(3),
 .flex-item:first-child:nth-last-child(5) ~ .flex-item:nth-child(4),
 .flex-item:first-child:nth-last-child(5) ~ .flex-item:nth-child(5){
 	flex-grow: 2;

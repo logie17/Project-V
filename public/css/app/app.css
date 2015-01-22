@@ -1,0 +1,44 @@
+body{
+	background: #222;
+	color: #ddd;
+}
+.navbar-default{
+	background-color: inherit;
+	border: 0;
+}
+.navbar-default .navbar-brand{
+	color: #fff;
+}
+.navbar-form .form-control{
+	background: inherit;
+	border: 0;
+	border-radius: 0;
+	color: #fff;
+}
+.navbar-form .form-control:focus{
+	background: #333;
+	border-color: ccc;
+	outline: 0;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+.content{
+	margin-top: 10px;
+}
+.right-pane{
+	border-right: 1px solid #333;
+	background: #191919;
+	padding-top: 1%;
+	padding-bottom: 1%;
+}
+.right-pane ul{
+	margin-bottom: 0;
+}
+.right-pane .btn{
+	color: #fff;
+	padding-left: 0;
+	font-size: 14px;
+}
+.right-pane .label{
+	margin-top: 4px;
+}

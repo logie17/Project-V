@@ -13,6 +13,8 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 			clean: {
 				bower: ["public/vendor/"],
+				cssvendor: ["public/css/vendor/"],
+				cssdist: ["public/css/dist/"],
 				jsvendor: ["public/js/vendor/"],
 			},
 			// ========== CSS ==========
@@ -23,16 +25,13 @@ module.exports = function(grunt) {
 					}
 				},
 				cssmin: {
-					options: {
-						keepSpecialComments: 0
-					},
-					combine: {
-						files: [{
-							expand: true,
-							src: ['vendor/normalize.css/normalize.css'],
-							dest: 'dist/css/',
-							ext: '.min.css'
-						}]
+					dist: {
+						options: {
+							report: "gzip",
+						},
+						files: {
+							"public/css/dist/app.min.css": ['public/css/vendor/*css']
+						}
 					}
 				},
         // ========== END CSS ==========
@@ -120,8 +119,14 @@ module.exports = function(grunt) {
 					jsvendor: {
 						flatten: true,
 						expand: true,
-						src: ['public/vendor/requirejs/require.js', 'public/vendor/jquery/jquery.js'],
+						src: ['public/vendor/requirejs/require.js', 'public/vendor/jquery/jquery.js', 'public/vendor/bootstrap/bootstrap.js'],
 						dest: 'public/js/vendor/'
+					},
+					cssvendor: {
+						flatten: true,
+						expand: true,
+						src: ['public/vendor/bootstrap/bootstrap.css'],
+						dest: 'public/css/vendor/'
 					},
 				}
 
@@ -135,7 +140,7 @@ module.exports = function(grunt) {
 		// test only
 		grunt.registerTask('test', ['csslint', 'jshint']);
 		// JS
-		grunt.registerTask('js', ["clean:jsvendor", "bower", "copy", "clean:bower"]);
+		grunt.registerTask('js', ["clean:jsvendor", "bower", "copy:jsvendor", "clean:bower"]);
 		// CSS
-		grunt.registerTask('css', ['csslint', 'cssmin']);
+		grunt.registerTask('css', ["clean:cssvendor", "clean:cssdist", "bower", "copy:cssvendor", "csslint", "cssmin"]);
 };

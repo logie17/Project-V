@@ -119,7 +119,7 @@ module.exports = function(grunt) {
 					jsvendor: {
 						flatten: true,
 						expand: true,
-						src: ['public/vendor/requirejs/require.js', 'public/vendor/jquery/jquery.js', 'public/vendor/bootstrap/bootstrap.js'],
+						src: ['public/vendor/requirejs/require.js', 'public/vendor/jquery/jquery.js', 'public/vendor/bootstrap/bootstrap.js', 'public/vendor/swig/js/swig.js'],
 						dest: 'public/js/vendor/'
 					},
 					cssvendor: {

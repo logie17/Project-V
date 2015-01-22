@@ -134,7 +134,7 @@ module.exports = function(grunt) {
     });
 
     // Default task: the works
-		grunt.registerTask('default', ['clean', 'bower', 'csslint', 'jshint', 'cssmin']);
+		grunt.registerTask('default', ['js', 'css']);
 		// Make it
 		grunt.registerTask('make', ['clean', 'cssmin']);
 		// test only

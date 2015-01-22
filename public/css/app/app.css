@@ -22,6 +22,16 @@ body{
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
+.popover{
+	background: #333;
+	color: #fff;
+}
+.popover.right > .arrow:after{
+	border-right-color: #333;
+}
+
+
+
 .content{
 	margin-top: 10px;
 }
@@ -38,6 +48,9 @@ body{
 	color: #fff;
 	padding-left: 0;
 	font-size: 14px;
+}
+.right-pane .btn:focus{
+	outline: none;
 }
 .right-pane .label{
 	margin-top: 4px;

@@ -39,12 +39,21 @@ body{
 }
 
 /* popover */
-.popover{
+.dropdown-menu, .dropdown-menu>li>a, .popover{
 	background: #333;
 	color: #fff;
 }
 .popover.right > .arrow:after{
 	border-right-color: #333;
+}
+.dropdown-menu, .popover{
+	border-radius: 0;
+}
+.dropdown-menu{
+	top: 80%;
+}
+.dropdown-menu .divider{
+	background-color: #555;
 }
 
 

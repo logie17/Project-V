@@ -26,3 +26,7 @@
 	{% include "../partials/index.html" %}
 {% endcomment %}
 {% endblock %}
+
+{% block pagejs %}
+	require(["app/home"], function( ) {});
+{% endblock %}

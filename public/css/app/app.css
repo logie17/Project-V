@@ -15,14 +15,27 @@ body{
 	background: inherit;
 	border: 0;
 	border-radius: 0;
-	color: #fff;
+	color: #999;
 }
 .navbar-form .form-control:focus{
-	background: #333;
-	border-color: ccc;
+	border-bottom: 1px solid #555;
+	color: #fff;
+	padding-left: 0;
 	outline: 0;
 	-webkit-box-shadow: none;
 	box-shadow: none;
+}
+.navbar-default .navbar-nav>li>a, 
+.navbar-default .navbar-text{
+	color: #999;
+}
+.navbar-default .navbar-nav>li>a:focus, 
+.navbar-default .navbar-nav>li>a:hover,
+.navbar-default .navbar-nav>.open>a, 
+.navbar-default .navbar-nav>.open>a:focus, 
+.navbar-default .navbar-nav>.open>a:hover{
+	color: #fff;
+	background: inherit;
 }
 
 /* popover */
@@ -36,6 +49,9 @@ body{
 
 
 /* forms */
+.form-control{
+	transition: border-color ease-in-out 2s;
+}
 .form-control, .btn{
 	border-radius: 0;
 }
@@ -47,7 +63,7 @@ body{
 	margin-top: 10px;
 }
 .right-pane{
-	border-right: 1px solid #333;
+	border-right: 1px solid #555;
 	background: #191919;
 	padding-top: 1%;
 	padding-bottom: 1%;

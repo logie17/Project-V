@@ -2,6 +2,8 @@ body{
 	background: #222;
 	color: #ddd;
 }
+
+/* navbar */
 .navbar-default{
 	background-color: inherit;
 	border: 0;
@@ -22,6 +24,8 @@ body{
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
+
+/* popover */
 .popover{
 	background: #333;
 	color: #fff;
@@ -31,7 +35,14 @@ body{
 }
 
 
+/* forms */
+.form-control, .btn{
+	border-radius: 0;
+}
+/* buttons */
 
+
+/* main app page */
 .content{
 	margin-top: 10px;
 }
@@ -54,4 +65,12 @@ body{
 }
 .right-pane .label{
 	margin-top: 4px;
+}
+
+/* login page */
+.login-form{
+	margin-top: 40%;
+}
+.forgot{
+	margin-top: 15px;
 }

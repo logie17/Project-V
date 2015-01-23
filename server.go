@@ -30,6 +30,7 @@ func main() {
 	r.HandleFunc("/", indexHandler)
 	r.HandleFunc("/login", loginHandler)
 	r.HandleFunc("/flex", flexHandler)
+	r.HandleFunc("/webrtc", webrtcHandler)
 	r.PathPrefix("/").Handler(http.FileServer(http.Dir("./public/")))
 
 	http.Handle("/", Middleware(r, db))

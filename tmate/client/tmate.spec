@@ -45,5 +45,5 @@ make DESTDIR=%{buildroot} install
 
 %changelog
 
-* Sat Jan 24 2015 - Kevin Mulvey <kmulvey@linux.com> - 1.8.9-1
+* Sat Jan 24 2015 - Kevin Mulvey <kmulvey@linux.com> - 1.8.10-1
 - The big bang.

@@ -9,9 +9,7 @@ import (
 	"net/http"
 )
 
-var index_page_tmpl = pongo2.Must(pongo2.FromFile("templates/pages/index.html"))
 var index_partial_tmpl = pongo2.Must(pongo2.FromFile("templates/partials/index.html"))
-var login_page_tmpl = pongo2.Must(pongo2.FromFile("templates/pages/login.html"))
 var flex_page_tmpl = pongo2.Must(pongo2.FromFile("templates/pages/flex.html"))
 var webrtc_page_tmpl = pongo2.Must(pongo2.FromFile("templates/pages/webrtc.html"))
 
@@ -60,8 +58,6 @@ func loginPostHandler(c *gin.Context) {
 	}
 	var form LoginForm
 	c.BindWith(&form, binding.Form)
-	fmt.Printf("%s\n", "got in binding")
-	fmt.Printf("%s\n", form.User)
 	if form.User == "km@km.com" {
 		session.Values["username"] = form.User
 		c.Redirect(http.StatusMovedPermanently, "/pair")

@@ -19,7 +19,7 @@ func main() {
 	router.Run(":3001")
 }
 
-var store = sessions.NewCookieStore([]byte("a-secret-string"))
+var store *sessions.CookieStore = sessions.NewCookieStore([]byte("a-secret-string"))
 
 type LoginForm struct {
 	User     string `form:"email" binding:"required"`

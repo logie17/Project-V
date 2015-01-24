@@ -6,16 +6,17 @@ Summary:        Instant terminal sharing
 License:        MIT
 Url:            http://tmate.io
 
-BuildRequires:  autoconf
-BuildRequires:  libtool
-BuildRequires:  pkgconfig
+BuildRequires:  git-core 
+BuildRequires:  build-essential 
+BuildRequires:  pkg-config 
+BuildRequires:  libtool 
+BuildRequires:  libevent-dev 
+BuildRequires:  libncurses-dev 
+BuildRequires:  zlib1g-dev 
+BuildRequires:  automake 
+BuildRequires:  libssh-dev 
+BuildRequires:  cmake 
 BuildRequires:  ruby
-BuildRequires:  libevent-devel
-BuildRequires:  openssl-devel
-BuildRequires:  ncurses-devel
-BuildRequires:  zlib-devel
-BuildRequires:  libssh-devel >= 0.6.0
-BuildRequires:  msgpack-devel >= 0.5.8
 
 Source0:        https://github.com/nviennot/tmate-slave/archive/1.8.zip
 

@@ -2,13 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/Sirupsen/logrus"
-	"github.com/flosch/pongo2"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/gorilla/sessions"
 	"net/http"
-	"time"
 )
 
 func main() {
@@ -18,38 +15,11 @@ func main() {
 	router.Static("/public", "./public")
 
 	router.GET("/", func(c *gin.Context) {
-		ctx := pongo2.Context{
-			"title": "Gin meets pongo2 !",
-		}
-		c.HTML(200, "templates/pages/index.html", ctx)
 	})
+	router.GET("/login", loginGetHandler)
 	router.POST("/login", set)
 	router.GET("/get", get)
 	router.Run(":3001")
-}
-func Logrus() gin.HandlerFunc {
-	var log = logrus.New()
-	log.Level = logrus.InfoLevel
-	log.Formatter = &logrus.TextFormatter{}
-	return func(c *gin.Context) {
-		t := time.Now()
-		log.WithFields(logrus.Fields{
-			"method":  c.Request.Method,
-			"request": c.Request.URL,
-			"remote":  c.Request.RemoteAddr,
-		}).Info("started handling request")
-		// before request
-
-		c.Next()
-
-		// after request
-		latency := time.Since(t)
-		log.WithFields(logrus.Fields{
-			"status": c.Writer.Status(),
-			"proto":  c.Request.Proto,
-			"took":   latency,
-		}).Info("completed handling request")
-	}
 }
 
 var store = sessions.NewCookieStore([]byte("a-secret-string"))

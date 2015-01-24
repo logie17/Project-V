@@ -4,6 +4,8 @@ import (
 	"github.com/flosch/pongo2"
 	"github.com/gin-gonic/gin"
 	//"github.com/gorilla/context"
+	"fmt"
+	"github.com/gin-gonic/gin/binding"
 	"net/http"
 )
 
@@ -41,13 +43,31 @@ func loginGetHandler(c *gin.Context) {
 	ctx := pongo2.Context{
 		"title": "Login",
 	}
+	session, err := store.Get(c.Request, "flash-session")
+	if err != nil {
+		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
+	}
+	if flashes := session.Flashes(); len(flashes) > 0 {
+		fmt.Fprint(c.Writer, "%v", flashes)
+	}
 	c.HTML(http.StatusOK, "templates/pages/login.html", ctx)
 }
-func loginHandler(w http.ResponseWriter, r *http.Request) {
-	err := login_page_tmpl.ExecuteWriter(pongo2.Context{"query": r.FormValue("query")}, w)
+func loginPostHandler(c *gin.Context) {
+
+	session, err := store.Get(c.Request, "flash-session")
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 	}
+	var form LoginForm
+	c.BindWith(&form, binding.Form)
+	fmt.Printf("%s\n", "got in binding")
+	fmt.Printf("%s\n", form.User)
+	if form.User == "km@km.com" {
+		session.Values["username"] = form.User
+		c.Redirect(http.StatusMovedPermanently, "/pair")
+	}
+	session.AddFlash("Login failed!", "message")
+	session.Save(c.Request, c.Writer)
 }
 
 func flexHandler(w http.ResponseWriter, r *http.Request) {
@@ -55,6 +75,12 @@ func flexHandler(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
+}
+func pairGetHandler(c *gin.Context) {
+	ctx := pongo2.Context{
+		"title": "Pair",
+	}
+	c.HTML(http.StatusOK, "templates/pages/pair.html", ctx)
 }
 
 func webrtcHandler(w http.ResponseWriter, r *http.Request) {

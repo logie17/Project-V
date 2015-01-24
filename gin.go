@@ -16,15 +16,15 @@ func main() {
 
 	router.GET("/", indexHandler)
 	router.GET("/login", loginGetHandler)
-	router.POST("/login", set)
-	router.GET("/get", get)
+	router.POST("/login", loginPostHandler)
+	router.GET("/pair", pairGetHandler)
 	router.Run(":3001")
 }
 
 var store = sessions.NewCookieStore([]byte("a-secret-string"))
 
 type LoginForm struct {
-	User     string `form:"name" binding:"required"`
+	User     string `form:"email" binding:"required"`
 	Password string `form:"password" binding:"required"`
 }
 

@@ -14,8 +14,7 @@ func main() {
 	router.HTMLRender = newPongoRender()
 	router.Static("/public", "./public")
 
-	router.GET("/", func(c *gin.Context) {
-	})
+	router.GET("/", indexHandler)
 	router.GET("/login", loginGetHandler)
 	router.POST("/login", set)
 	router.GET("/get", get)

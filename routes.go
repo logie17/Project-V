@@ -15,7 +15,7 @@ var webrtc_page_tmpl = pongo2.Must(pongo2.FromFile("templates/pages/webrtc.html"
 
 func indexHandler(c *gin.Context) {
 	ctx := pongo2.Context{
-		"title": "Gin meets pongo2 !",
+		"title": "pairparty.io",
 	}
 	c.HTML(http.StatusOK, "templates/pages/index.html", ctx)
 	/*

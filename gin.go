@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/Sirupsen/logrus"
+	"github.com/flosch/pongo2"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"github.com/gorilla/sessions"
@@ -13,14 +14,18 @@ import (
 func main() {
 	router := gin.New()
 	router.Use(Logrus())
-	router.LoadHTMLGlob("./*")
+	router.HTMLRender = newPongoRender()
+	router.Static("/public", "./public")
+
 	router.GET("/", func(c *gin.Context) {
-		obj := gin.H{"title": "Main website"}
-		c.HTML(200, "index.tmpl", obj)
+		ctx := pongo2.Context{
+			"title": "Gin meets pongo2 !",
+		}
+		c.HTML(200, "templates/pages/index.html", ctx)
 	})
 	router.POST("/login", set)
 	router.GET("/get", get)
-	router.Run(":8080")
+	router.Run(":3001")
 }
 func Logrus() gin.HandlerFunc {
 	var log = logrus.New()

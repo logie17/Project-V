@@ -4,14 +4,13 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
+	"github.com/jinzhu/gorm"
 	"github.com/logie17/Project-V/config"
 	h "github.com/logie17/Project-V/handles"
 	m "github.com/logie17/Project-V/middleware"
-	"log"
-	"github.com/jinzhu/gorm"
 	"github.com/logie17/Project-V/model"
 	_ "github.com/mattn/go-sqlite3"
-
+	"log"
 )
 
 var store *sessions.CookieStore = sessions.NewCookieStore([]byte("a-secret-string"))
@@ -24,7 +23,7 @@ func main() {
 	if err != nil {
 		log.Println("Uh, can't open the database: %s", err.Error())
 	}
-	
+
 	router.Use(m.Logrus())
 	router.Use(m.IsMobile()) // this doesnt work yet
 	// this is how we can get global template data

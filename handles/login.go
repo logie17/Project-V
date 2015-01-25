@@ -6,8 +6,8 @@ import (
 	"github.com/flosch/pongo2"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"github.com/jinzhu/gorm"
 	"github.com/gorilla/sessions"
+	"github.com/jinzhu/gorm"
 	"github.com/logie17/Project-V/model"
 	_ "github.com/mattn/go-sqlite3"
 	"net/http"
@@ -29,7 +29,7 @@ func LoginGetHandler(store *sessions.CookieStore) gin.HandlerFunc {
 		}
 		// already logged in
 		var email = session.Values["email"]
-		if email != nil {
+		if email == "" {
 			c.Fail(http.StatusUnauthorized, errors.New("Unauthorized")) // idk why this is needed but it is
 			c.Redirect(http.StatusMovedPermanently, "/pair")
 			return
@@ -55,8 +55,9 @@ func LoginPostHandler(store *sessions.CookieStore, db *gorm.DB) gin.HandlerFunc 
 			user := model.User{}
 			db.Where(&model.User{Email: form.Email, Password: form.Password}).First(&user)
 
-			if (user.Id > 0 ) {
+			if user.Id > 0 {
 				session.Values["email"] = form.Email
+				session.Save(c.Request, c.Writer)
 				c.Redirect(http.StatusMovedPermanently, "/pair")
 			}
 		}

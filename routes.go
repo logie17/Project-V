@@ -29,7 +29,7 @@ func main() {
 	router.POST("/login", h.LoginPostHandler(store))
 
 	router.GET("/signup", h.SignupGetHandler(store))
-	router.POST("/signup", h.LoginPostHandler(store))
+	router.POST("/signup", h.SignupPostHandler(store))
 
 	router.GET("/pair", m.IsAuthenticated(store), h.PairGetHandler)
 

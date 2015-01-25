@@ -6,7 +6,10 @@ import (
 	"github.com/flosch/pongo2"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/jinzhu/gorm"
 	"github.com/gorilla/sessions"
+	"github.com/logie17/Project-V/model"
+	_ "github.com/mattn/go-sqlite3"
 	"net/http"
 )
 
@@ -38,7 +41,7 @@ func LoginGetHandler(store *sessions.CookieStore) gin.HandlerFunc {
 	}
 }
 
-func LoginPostHandler(store *sessions.CookieStore) gin.HandlerFunc {
+func LoginPostHandler(store *sessions.CookieStore, db *gorm.DB) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session, err := store.Get(c.Request, "flash-session")
 		if err != nil {
@@ -46,10 +49,16 @@ func LoginPostHandler(store *sessions.CookieStore) gin.HandlerFunc {
 		}
 		// lets checkout the form
 		var form LoginForm
+
 		c.BindWith(&form, binding.Form)
-		if form.User == "km@km.com" {
-			session.Values["username"] = form.User
-			c.Redirect(http.StatusMovedPermanently, "/pair")
+		if form.User != "" {
+			user := model.User{}
+			db.Where(&model.User{Email: form.User, Password: form.Password}).First(user)
+			println("YO YO YO YO")
+			if (user.Id > 0 ) {
+				session.Values["username"] = form.User
+				c.Redirect(http.StatusMovedPermanently, "/pair")
+			}
 		}
 		session.AddFlash("Login failed!", "message")
 		session.Save(c.Request, c.Writer)

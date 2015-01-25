@@ -7,6 +7,11 @@ import (
 	"github.com/logie17/Project-V/config"
 	h "github.com/logie17/Project-V/handles"
 	m "github.com/logie17/Project-V/middleware"
+	"log"
+	"github.com/jinzhu/gorm"
+	"github.com/logie17/Project-V/model"
+	_ "github.com/mattn/go-sqlite3"
+
 )
 
 var store *sessions.CookieStore = sessions.NewCookieStore([]byte("a-secret-string"))
@@ -14,6 +19,12 @@ var store *sessions.CookieStore = sessions.NewCookieStore([]byte("a-secret-strin
 func main() {
 	router := gin.New()
 	configuration := config.LoadConfig()
+
+	db, err := setupDB(configuration)
+	if err != nil {
+		log.Println("Uh, can't open the database: %s", err.Error())
+	}
+	
 	router.Use(m.Logrus())
 	router.Use(m.IsMobile()) // this doesnt work yet
 	// this is how we can get global template data
@@ -26,7 +37,7 @@ func main() {
 	router.GET("/", h.IndexHandler)
 
 	router.GET("/login", h.LoginGetHandler(store))
-	router.POST("/login", h.LoginPostHandler(store))
+	router.POST("/login", h.LoginPostHandler(store, db))
 
 	router.GET("/signup", h.SignupGetHandler(store))
 	router.POST("/signup", h.SignupPostHandler(store))
@@ -34,4 +45,21 @@ func main() {
 	router.GET("/pair", m.IsAuthenticated(store), h.PairGetHandler)
 
 	router.Run(fmt.Sprintf("[::]:%s", configuration.Port))
+}
+
+func setupDB(configuration *config.Configuration) (*gorm.DB, error) {
+	db, err := gorm.Open("sqlite3", configuration.Database)
+
+	if err != nil {
+		return &db, err
+	}
+
+	db.DB().SetMaxIdleConns(10)
+	db.DB().SetMaxOpenConns(100)
+	db.SingularTable(true)
+
+	db.CreateTable(&model.User{})
+
+	return &db, err
+
 }

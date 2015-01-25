@@ -16,15 +16,16 @@ func main() {
 	router.Static("/public", "./public")
 
 	router.GET("/", indexHandler)
+
 	router.GET("/login", loginGetHandler)
 	router.POST("/login", loginPostHandler)
+
+	router.GET("/signup", signupGetHandler)
+	router.POST("/signup", loginPostHandler)
+
 	router.GET("/pair", m.IsAuthenticated(store), pairGetHandler)
+
 	router.Run(fmt.Sprintf("[::]:%s", configuration.Port))
 }
 
 var store *sessions.CookieStore = sessions.NewCookieStore([]byte("a-secret-string"))
-
-type LoginForm struct {
-	User     string `form:"email" binding:"required"`
-	Password string `form:"password" binding:"required"`
-}

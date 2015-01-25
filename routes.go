@@ -10,9 +10,14 @@ import (
 	"net/http"
 )
 
-var index_partial_tmpl = pongo2.Must(pongo2.FromFile("templates/partials/index.html"))
-var flex_page_tmpl = pongo2.Must(pongo2.FromFile("templates/pages/flex.html"))
-var webrtc_page_tmpl = pongo2.Must(pongo2.FromFile("templates/pages/webrtc.html"))
+type LoginForm struct {
+	User     string `form:"email" binding:"required"`
+	Password string `form:"password" binding:"required"`
+}
+type SignupForm struct {
+	FirstName string `form:"f_name" binding:"required"`
+	Password  string `form:"password" binding:"required"`
+}
 
 func indexHandler(c *gin.Context) {
 	ctx := pongo2.Context{
@@ -75,11 +80,17 @@ func loginPostHandler(c *gin.Context) {
 	session.Save(c.Request, c.Writer)
 }
 
-func flexHandler(w http.ResponseWriter, r *http.Request) {
-	err := flex_page_tmpl.ExecuteWriter(pongo2.Context{"query": r.FormValue("query")}, w)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
+func signupGetHandler(c *gin.Context) {
+	ctx := pongo2.Context{
+		"title": "Pair",
 	}
+	c.HTML(http.StatusOK, "templates/pages/signup.html", ctx)
+}
+func signupPostHandler(c *gin.Context) {
+	// lets checkout the form
+	var form SignupForm
+	c.BindWith(&form, binding.Form)
+	// logie should do something about this
 }
 
 func pairGetHandler(c *gin.Context) {
@@ -87,11 +98,4 @@ func pairGetHandler(c *gin.Context) {
 		"title": "Pair",
 	}
 	c.HTML(http.StatusOK, "templates/pages/pair.html", ctx)
-}
-
-func webrtcHandler(w http.ResponseWriter, r *http.Request) {
-	err := webrtc_page_tmpl.ExecuteWriter(pongo2.Context{"query": r.FormValue("query")}, w)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-	}
 }

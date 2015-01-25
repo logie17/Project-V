@@ -48,7 +48,6 @@ func loginGetHandler(c *gin.Context) {
 	}
 	// already logged in
 	var username = session.Values["username"]
-	//fmt.Println("username: ", username)
 	if username != nil {
 		c.Fail(http.StatusUnauthorized, errors.New("Unauthorized")) // idk why this is needed but it is
 		c.Redirect(http.StatusMovedPermanently, "/pair")

@@ -27,69 +27,117 @@ if (room === '') {
   //
 }
 
-var socket = io.connect();
+//var socket = io.connect();
 
-if (room !== '') {
-  console.log('Create or join room', room);
-  socket.emit('create or join', room);
-}
-
-socket.on('created', function (room){
-  console.log('Created room ' + room);
-  isInitiator = true;
+//if (room !== '') {
+//  console.log('Create or join room', room);
+//  socket.emit('create or join', room);
+//}
+//subscribe to a pubnub channel move message logic to cb
+var pubnub = PUBNUB.init({
+		publish_key: 'pub-c-7a98e152-6137-4575-822e-59cc48692d05',
+		subscribe_key: 'sub-c-da95bae6-a2ec-11e4-8dd9-02ee2ddab7fe',
+		origin        : 'pubsub.pubnub.com',
+     //subscribe_key: 'sub-c-da95bae6-a2ec-11e4-8dd9-02ee2ddab7fe',
+     //uuid: 'vishal'
 });
 
-socket.on('full', function (room){
-  console.log('Room ' + room + ' is full');
-});
+pubnub.subscribe({                                      
+    channel : "hello_world",
+    message : function(message,env,channel){
+        console.log('Client received message:', message);
+        if (message === 'got user media') {
+        	  maybeStart();
+        } else if (message.type === 'offer') {
+            if (!isInitiator && !isStarted) {
+              maybeStart();
+            }
+            pc.setRemoteDescription(new RTCSessionDescription(message));
+            doAnswer();
+        } else if (message.type === 'answer' && isStarted) {
+            pc.setRemoteDescription(new RTCSessionDescription(message));
+        } else if (message.type === 'candidate' && isStarted) {
+            var candidate = new RTCIceCandidate({
+                sdpMLineIndex: message.label,
+                candidate: message.candidate
+            });
+            pc.addIceCandidate(candidate);
+        } else if (message === 'bye' && isStarted) {
+            handleRemoteHangup();
+        }
+    }
+    //connect: pub
+})
 
-socket.on('join', function (room){
-  console.log('Another peer made a request to join room ' + room);
-  console.log('This peer is the initiator of room ' + room + '!');
-  isChannelReady = true;
+pubnub.here_now({
+    channel : 'hello_world',
+    callback : function(m){
+        console.log(JSON.stringify(m));
+        if(m.occupancy === 1) { 
+            console.log('Created room ' + 'hello_world');
+            isInitiator = true;
+        } else if (m.occupancy > 1) {
+            isChannelReady = true;
+        }
+    }
 });
-
-socket.on('joined', function (room){
-  console.log('This peer has joined room ' + room);
-  isChannelReady = true;
-});
-
-socket.on('log', function (array){
-  console.log.apply(console, array);
-});
+//socket.on('created', function (room){
+//  console.log('Created room ' + room);
+//  isInitiator = true;
+//});
+////use pubnub here_now to determine initiater
+//
+//socket.on('full', function (room){
+//  console.log('Room ' + room + ' is full');
+//});
+//
+//socket.on('join', function (room){
+//  console.log('Another peer made a request to join room ' + room);
+//  console.log('This peer is the initiator of room ' + room + '!');
+//  isChannelReady = true;
+//});
+//
+//socket.on('joined', function (room){
+//  console.log('This peer has joined room ' + room);
+//  isChannelReady = true;
+//});
+//
+//socket.on('log', function (array){
+//  console.log.apply(console, array);
+//});
 
 ////////////////////////////////////////////////
 
-function sendMessage(message){
-	console.log('Client sending message: ', message);
-  // if (typeof message === 'object') {
-  //   message = JSON.stringify(message);
-  // }
-  socket.emit('message', message);
-}
-
-socket.on('message', function (message){
-  console.log('Client received message:', message);
-  if (message === 'got user media') {
-  	maybeStart();
-  } else if (message.type === 'offer') {
-    if (!isInitiator && !isStarted) {
-      maybeStart();
-    }
-    pc.setRemoteDescription(new RTCSessionDescription(message));
-    doAnswer();
-  } else if (message.type === 'answer' && isStarted) {
-    pc.setRemoteDescription(new RTCSessionDescription(message));
-  } else if (message.type === 'candidate' && isStarted) {
-    var candidate = new RTCIceCandidate({
-      sdpMLineIndex: message.label,
-      candidate: message.candidate
-    });
-    pc.addIceCandidate(candidate);
-  } else if (message === 'bye' && isStarted) {
-    handleRemoteHangup();
-  }
-});
+//function sendMessage(message){
+//	console.log('Client sending message: ', message);
+//  // if (typeof message === 'object') {
+//  //   message = JSON.stringify(message);
+//  // }
+//  socket.emit('message', message);
+//}
+//
+//socket.on('message', function (message){
+//  console.log('Client received message:', message);
+//  if (message === 'got user media') {
+//  	maybeStart();
+//  } else if (message.type === 'offer') {
+//    if (!isInitiator && !isStarted) {
+//      maybeStart();
+//    }
+//    pc.setRemoteDescription(new RTCSessionDescription(message));
+//    doAnswer();
+//  } else if (message.type === 'answer' && isStarted) {
+//    pc.setRemoteDescription(new RTCSessionDescription(message));
+//  } else if (message.type === 'candidate' && isStarted) {
+//    var candidate = new RTCIceCandidate({
+//      sdpMLineIndex: message.label,
+//      candidate: message.candidate
+//    });
+//    pc.addIceCandidate(candidate);
+//  } else if (message === 'bye' && isStarted) {
+//    handleRemoteHangup();
+//  }
+//});
 
 ////////////////////////////////////////////////////
 
@@ -100,7 +148,11 @@ function handleUserMedia(stream) {
   console.log('Adding local stream.');
   localVideo.src = window.URL.createObjectURL(stream);
   localStream = stream;
-  sendMessage('got user media');
+  //sendMessage('got user media');
+  pubnub.publish({
+     channel: 'hello_world',        
+     message: 'got user media'
+ });
   if (isInitiator) {
     maybeStart();
   }
@@ -132,7 +184,11 @@ function maybeStart() {
 }
 
 window.onbeforeunload = function(e){
-	sendMessage('bye');
+	//sendMessage('bye');
+  pubnub.publish({
+     channel: 'hello_world',        
+     message: 'bye'
+  });
 }
 
 /////////////////////////////////////////////////////////
@@ -154,11 +210,23 @@ function createPeerConnection() {
 function handleIceCandidate(event) {
   console.log('handleIceCandidate event: ', event);
   if (event.candidate) {
-    sendMessage({
-      type: 'candidate',
-      label: event.candidate.sdpMLineIndex,
-      id: event.candidate.sdpMid,
-      candidate: event.candidate.candidate});
+    //sendMessage(
+    //{
+    //  type: 'candidate',
+    //  label: event.candidate.sdpMLineIndex,
+    //  id: event.candidate.sdpMid,
+    //  candidate: event.candidate.candidate
+    //}
+    //);
+      pubnub.publish({
+           channel: 'hello_world',        
+           message: {
+               type: 'candidate',
+               label: event.candidate.sdpMLineIndex,
+               id: event.candidate.sdpMid,
+               candidate: event.candidate.candidate
+           }
+      });
   } else {
     console.log('End of candidates.');
   }
@@ -189,7 +257,11 @@ function setLocalAndSendMessage(sessionDescription) {
   sessionDescription.sdp = preferOpus(sessionDescription.sdp);
   pc.setLocalDescription(sessionDescription);
   console.log('setLocalAndSendMessage sending message' , sessionDescription);
-  sendMessage(sessionDescription);
+  //sendMessage();
+  pubnub.publish({
+     channel: 'hello_world',        
+     message: sessionDescription
+  });
 }
 
 function requestTurn(turn_url) {
@@ -234,7 +306,11 @@ function handleRemoteStreamRemoved(event) {
 function hangup() {
   console.log('Hanging up.');
   stop();
-  sendMessage('bye');
+  //sendMessage('bye');
+  pubnub.publish({
+     channel: 'hello_world',        
+     message: 'bye'
+  });
 }
 
 function handleRemoteHangup() {

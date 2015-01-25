@@ -9,6 +9,7 @@ import (
 func IsMobile() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		detect := mobiledetect.NewMobileDetect(c.Request, nil)
+		c.Set("WTF_KEVIN", "this works!")
 		if detect.IsMobile() {
 			var ctx map[string]interface{} = pongo2.Context{
 				"mobile": true,

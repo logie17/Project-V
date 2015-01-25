@@ -1,16 +1,15 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
 	"github.com/logie17/Project-V/config"
-	m "github.com/logie17/Project-V/middleware"
 	h "github.com/logie17/Project-V/handles"
+	m "github.com/logie17/Project-V/middleware"
 )
 
 var store *sessions.CookieStore = sessions.NewCookieStore([]byte("a-secret-string"))
-
 
 func main() {
 	router := gin.New()
@@ -36,7 +35,3 @@ func main() {
 
 	router.Run(fmt.Sprintf("[::]:%s", configuration.Port))
 }
-
-
-
-

@@ -7,12 +7,9 @@ import (
 )
 
 func PairGetHandler(c *gin.Context) {
-	ctx := pongo2.Context{
+	ctx := c.MustGet("template_data").(pongo2.Context)
+	ctx = ctx.Update(pongo2.Context{
 		"title": "Pair",
-	}
-	global_crap := c.MustGet("WTF_KEVIN").(string)
-	println("------")
-	println(global_crap)
-	println("-------")
+	})
 	c.HTML(http.StatusOK, "templates/pages/pair.html", ctx)
 }

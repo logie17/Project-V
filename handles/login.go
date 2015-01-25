@@ -14,7 +14,7 @@ import (
 )
 
 type LoginForm struct {
-	User     string `form:"email" binding:"required"`
+	Email    string `form:"email" binding:"required"`
 	Password string `form:"password" binding:"required"`
 }
 
@@ -28,8 +28,8 @@ func LoginGetHandler(store *sessions.CookieStore) gin.HandlerFunc {
 			http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 		}
 		// already logged in
-		var username = session.Values["username"]
-		if username != nil {
+		var email = session.Values["email"]
+		if email != nil {
 			c.Fail(http.StatusUnauthorized, errors.New("Unauthorized")) // idk why this is needed but it is
 			c.Redirect(http.StatusMovedPermanently, "/pair")
 			return
@@ -51,12 +51,12 @@ func LoginPostHandler(store *sessions.CookieStore, db *gorm.DB) gin.HandlerFunc 
 		var form LoginForm
 
 		c.BindWith(&form, binding.Form)
-		if form.User != "" {
+		if form.Email != "" {
 			user := model.User{}
-			db.Where(&model.User{Email: form.User, Password: form.Password}).First(user)
-			println("YO YO YO YO")
+			db.Where(&model.User{Email: form.Email, Password: form.Password}).First(&user)
+
 			if (user.Id > 0 ) {
-				session.Values["username"] = form.User
+				session.Values["email"] = form.Email
 				c.Redirect(http.StatusMovedPermanently, "/pair")
 			}
 		}

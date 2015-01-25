@@ -1,13 +1,13 @@
 package handles
 
 import (
-	"fmt"
 	"errors"
-	"github.com/gin-gonic/gin"
+	"fmt"
 	"github.com/flosch/pongo2"
-	"net/http"
-	"github.com/gorilla/sessions"
+	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/gorilla/sessions"
+	"net/http"
 )
 
 type LoginForm struct {
@@ -39,7 +39,7 @@ func LoginGetHandler(store *sessions.CookieStore) gin.HandlerFunc {
 }
 
 func LoginPostHandler(store *sessions.CookieStore) gin.HandlerFunc {
-	return func (c *gin.Context) {
+	return func(c *gin.Context) {
 		session, err := store.Get(c.Request, "flash-session")
 		if err != nil {
 			http.Error(c.Writer, err.Error(), http.StatusInternalServerError)

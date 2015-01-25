@@ -1,11 +1,11 @@
 package handles
 
 import (
-	"github.com/gin-gonic/gin"
 	"github.com/flosch/pongo2"
+	"github.com/gin-gonic/gin"
+	"github.com/gin-gonic/gin/binding"
 	"github.com/gorilla/sessions"
 	"net/http"
-	"github.com/gin-gonic/gin/binding"
 )
 
 type SignupForm struct {

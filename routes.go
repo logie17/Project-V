@@ -4,6 +4,7 @@ import (
 	"github.com/flosch/pongo2"
 	"github.com/gin-gonic/gin"
 	//"github.com/gorilla/context"
+	"errors"
 	"fmt"
 	"github.com/gin-gonic/gin/binding"
 	"net/http"
@@ -45,17 +46,26 @@ func loginGetHandler(c *gin.Context) {
 	if err != nil {
 		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 	}
+	// already logged in
+	var username = session.Values["username"]
+	//fmt.Println("username: ", username)
+	if username != nil {
+		c.Fail(http.StatusUnauthorized, errors.New("Unauthorized")) // idk why this is needed but it is
+		c.Redirect(http.StatusMovedPermanently, "/pair")
+		return
+	}
 	if flashes := session.Flashes(); len(flashes) > 0 {
 		fmt.Fprint(c.Writer, "%v", flashes)
 	}
 	c.HTML(http.StatusOK, "templates/pages/login.html", ctx)
 }
-func loginPostHandler(c *gin.Context) {
 
+func loginPostHandler(c *gin.Context) {
 	session, err := store.Get(c.Request, "flash-session")
 	if err != nil {
 		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 	}
+	// lets checkout the form
 	var form LoginForm
 	c.BindWith(&form, binding.Form)
 	if form.User == "km@km.com" {
@@ -72,6 +82,7 @@ func flexHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 	}
 }
+
 func pairGetHandler(c *gin.Context) {
 	ctx := pongo2.Context{
 		"title": "Pair",

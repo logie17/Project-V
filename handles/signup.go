@@ -26,9 +26,7 @@ type SignupForm struct {
 // contain any logic but simply renders the template.
 func SignupGetHandler(store *sessions.CookieStore) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		ctx := pongo2.Context{
-			"title": "Pair",
-		}
+		ctx := c.MustGet("global_data").(pongo2.Context)
 		c.HTML(http.StatusOK, "templates/pages/signup.html", ctx)
 	}
 }

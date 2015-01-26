@@ -1,12 +1,12 @@
 [Service]
-ExecStart=/home/kmulvey/code/src/prod/Project-V
-WorkingDirectory=/home/kmulvey/code/src/prod/
+ExecStart=/home/kmulvey/go/src/github.com/logie17/Project-V/Project-V
+WorkingDirectory=/home/kmulvey/go/src/github.com/logie17/Project-V/
 StandardOutput=syslog
 Restart=always
 SyslogIdentifier=projectv
 User=nobody
 Group=nobody
-Environment=GOPATH=/home/kmulvey/code/
+Environment=GOPATH=/home/kmulvey/go/
 
 [Install]
 WantedBy=multi-user.target

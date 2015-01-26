@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
 	"github.com/jinzhu/gorm"
@@ -10,7 +12,6 @@ import (
 	m "github.com/logie17/Project-V/middleware"
 	"github.com/logie17/Project-V/model"
 	_ "github.com/mattn/go-sqlite3"
-	"log"
 )
 
 var store *sessions.CookieStore = sessions.NewCookieStore([]byte("a-secret-string"))
@@ -46,6 +47,8 @@ func main() {
 	router.Run(fmt.Sprintf("[::]:%s", configuration.Port))
 }
 
+// setupDB is a private methon run on app start that connects to the database
+// and returns the connection.
 func setupDB(configuration *config.Configuration) (*gorm.DB, error) {
 	db, err := gorm.Open("sqlite3", configuration.Database)
 

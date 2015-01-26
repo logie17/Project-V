@@ -22,6 +22,8 @@ type SignupForm struct {
 	PasswordConfirm string `form:"password_confirm" binding:"required"`
 }
 
+// SignupGetHandler is the GET handler for the signup page.  I does not
+// contain any logic but simply renders the template.
 func SignupGetHandler(store *sessions.CookieStore) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		ctx := pongo2.Context{

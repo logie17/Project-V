@@ -3,6 +3,7 @@ package handles
 import (
 	"fmt"
 	"net/http"
+	"regexp"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/agnivade/easy-scrypt"
@@ -52,5 +53,34 @@ func SignupPostHandler(store *sessions.CookieStore) gin.HandlerFunc {
 			"title": "Pair",
 		}
 		c.HTML(http.StatusOK, "templates/pages/signup.html", ctx)
+	}
+}
+
+func stringValidator(str string, length int) bool {
+	if len(str) >= length {
+		return true
+	} else {
+		return false
+	}
+}
+
+func emailValidator(email string) bool {
+	// did we get a string worth checking?
+	if len(email) > 0 {
+		// check it
+		match, err := regexp.MatchString(`^[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,4}$`, email)
+		if err != nil {
+			panic(err)
+		}
+		if match {
+			// passed regex
+			return true
+		} else {
+			// falied regex
+			return false
+		}
+	} else {
+		// not a string worth checking
+		return false
 	}
 }

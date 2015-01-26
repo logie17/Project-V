@@ -13,8 +13,8 @@ func IsAuthenticated(store *sessions.CookieStore) gin.HandlerFunc {
 		if err != nil {
 			http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 		}
-		var username = session.Values["username"]
-		if username == nil {
+		var email = session.Values["email"]
+		if email == nil {
 			session.AddFlash("Login failed!", "message")
 			session.Save(c.Request, c.Writer)
 			c.Fail(http.StatusUnauthorized, errors.New("Unauthorized")) // idk why this is needed but it is

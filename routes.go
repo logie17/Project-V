@@ -26,6 +26,7 @@ func main() {
 	}
 
 	router.Use(m.Logrus())
+	// DONT PANIC   http://top-science-fiction-novels.com/wp-content/uploads/2010/09/dontpanic_1024.jpeg
 	router.Use(gin.Recovery())
 	router.Use(m.IsMobile()) // this doesnt work yet
 	// this is how we can get global template data

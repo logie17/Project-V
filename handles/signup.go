@@ -60,28 +60,42 @@ func SignupPostHandler(store *sessions.CookieStore) gin.HandlerFunc {
 	}
 }
 
+// validate is a private function that pimps out to the
+// other validator fields to check each and returns a
+// map of the error messages or nil if the form is valid
 func validate(form SignupForm) map[string]string {
 	var errors map[string]string = make(map[string]string)
+	var valid bool = true
 	if !stringValidator(form.FirstName, 1) {
 		errors["f_name"] = "Please enter a first name"
+		valid = false
 	}
 	if !stringValidator(form.LastName, 1) {
 		errors["l_name"] = "Please enter a last name"
+		valid = false
 	}
 	if !stringValidator(form.Organization, 1) {
 		errors["organization"] = "Please enter an organization"
+		valid = false
 	}
 	if !stringValidator(form.Email, 1) {
 		errors["email"] = "Please enter a valid email address"
+		valid = false
 	}
 	if !stringValidator(form.Password, 8) {
 		errors["password"] = "Please enter at least 8 characters"
+		valid = false
 	} else {
 		if form.PasswordConfirm != form.Password {
 			errors["password_confirm"] = "Passwords must match"
+			valid = false
 		}
 	}
-	return errors
+	if valid {
+		return nil
+	} else {
+		return errors
+	}
 }
 
 // stringValidator is a private function that checks the

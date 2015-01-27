@@ -8,7 +8,28 @@ var pc;
 var remoteStream;
 var turnReady;
 
-var pc_config = {'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]};
+var pc_config = {'iceServers': [
+	{url: "stun:stun.l.google.com:19302"},
+  {url: "stun:stun1.l.google.com:19302"},
+  {url: "stun:stun2.l.google.com:19302"},
+  {url: "stun:stun3.l.google.com:19302"},
+  {url: "stun:stun4.l.google.com:19302"},
+  {url: "stun:23.21.150.121"},
+  {url: "stun:stun01.sipphone.com"},
+  {url: "stun:stun.ekiga.net"},
+  {url: "stun:stun.fwdnet.net"},
+  {url: "stun:stun.ideasip.com"},
+  {url: "stun:stun.iptel.org"},
+  {url: "stun:stun.rixtelecom.se"},
+  {url: "stun:stun.schlund.de"},
+  {url: "stun:stunserver.org"},
+  {url: "stun:stun.softjoys.com"},
+  {url: "stun:stun.voiparound.com"},
+  {url: "stun:stun.voipbuster.com"},
+  {url: "stun:stun.voipstunt.com"},
+  {url: "stun:stun.voxgratia.org"},
+  {url: "stun:stun.xten.com"}
+]};
 
 var pc_constraints = {'optional': [{'DtlsSrtpKeyAgreement': true}]};
 
@@ -19,37 +40,25 @@ var sdpConstraints = {'mandatory': {
 
 /////////////////////////////////////////////
 
-var room = location.pathname.substring(1);
-if (room === '') {
-//  room = prompt('Enter room name:');
-  room = 'foo';
-} else {
-  //
-}
-
 var pubnub = PUBNUB.init({
-		publish_key: 'pub-c-7a98e152-6137-4575-822e-59cc48692d05',
+		publish_key:   'pub-c-7a98e152-6137-4575-822e-59cc48692d05',
 		subscribe_key: 'sub-c-da95bae6-a2ec-11e4-8dd9-02ee2ddab7fe',
-		origin        : 'pubsub.pubnub.com'
+		origin:        'pubsub.pubnub.com',
+		uuid:          username
 });
 
 pubnub.subscribe({                                      
-    channel : "room4",
+    channel : room,
     message : function(message,env,channel){
-				//console.log(env);
-        //console.log('Client received message:', message);
-				//console.log("pubnub message cb");
-				//console.log("isInitiator - ", isInitiator);
-				//console.log("isChannelReady - ", isChannelReady);
 
 				//if (!isInitiator || !isChannelReady) {
 					pubnub.here_now({
-					    channel : 'room4',
+					    channel : room,
 					    callback : function(m){
 					        console.log(JSON.stringify(m));
 									
 					        if(m.occupancy === 1) { 
-					            console.log('Created room ' + 'room4');
+					            console.log('Created room ' + room);
 					            isInitiator = true;
 					        } else if (m.occupancy > 1) {
 					            isChannelReady = true;
@@ -91,15 +100,11 @@ function handleUserMedia(stream) {
   console.log('Adding local stream.');
   localVideo.src = window.URL.createObjectURL(stream);
   localStream = stream;
-  //sendMessage('got user media');
   pubnub.publish({
-     channel: 'room4',        
+     channel: room,        
      message: 'got user media'
  });
   if (isInitiator) {
-		console.log("is initiator");
-		console.log("handleUserMedia maybeStart");
-		console.log("-------------------------");
     maybeStart();
   }
 }
@@ -118,17 +123,11 @@ if (location.hostname != "localhost") {
 }
 
 function maybeStart() {
-	console.log("isStarted - " + isStarted);
-	console.log("type of localStream - " + typeof localStream);
-	console.log("isChannelReady" + isChannelReady);
   if (!isStarted && typeof localStream != 'undefined' && isChannelReady) {
     createPeerConnection();
     pc.addStream(localStream);
     isStarted = true;
-    console.log('isInitiator', isInitiator);
-		console.log("!!!!!!!!!@@$@$@$@$@$@!!!!!!!");
     if (isInitiator) {
-			console.log("~~~~~~~~~ doing call ~~~~~~~~~~~");
       doCall();
     }
   }
@@ -136,11 +135,11 @@ function maybeStart() {
 
 window.onbeforeunload = function(e){
   pubnub.publish({
-     channel: 'room4',        
+     channel: room,        
      message: 'bye'
   });
   pubnub.unsubscribe({
-     channel: 'room4' 
+     channel: room 
   });
 }
 
@@ -164,7 +163,7 @@ function handleIceCandidate(event) {
   console.log('handleIceCandidate event: ', event);
   if (event.candidate) {
       pubnub.publish({
-           channel: 'room4',        
+           channel: room,        
            message: {
                type: 'candidate',
                label: event.candidate.sdpMLineIndex,
@@ -188,7 +187,6 @@ function handleCreateOfferError(event){
 }
 
 function doCall() {
-	console.log("!!!#!@#$%%^&");
   console.log('Sending offer to peer');
   pc.createOffer(setLocalAndSendMessage, handleCreateOfferError);
 }
@@ -204,7 +202,7 @@ function setLocalAndSendMessage(sessionDescription) {
   pc.setLocalDescription(sessionDescription);
   console.log('setLocalAndSendMessage sending message' , sessionDescription);
   pubnub.publish({
-     channel: 'room4',        
+     channel: room,        
      message: sessionDescription
   });
 }
@@ -252,11 +250,11 @@ function hangup() {
   console.log('Hanging up.');
   stop();
   pubnub.publish({
-     channel: 'room4',        
+     channel: room,        
      message: 'bye'
   });
   pubnub.unsubscribe({
-     channel: 'room4' 
+     channel: room 
   });
 }
 

@@ -9,7 +9,11 @@
 						<video id='remoteVideo' autoplay></video>
 					</div>
 				</div>
-	       <script src="http://cdn.pubnub.com/pubnub-3.7.2.min.js"></script>
+				<script src="http://cdn.pubnub.com/pubnub-3.7.2.min.js"></script>
+				<script type='text/javascript'>
+					var room = "{{ room }}" || "general";
+					var username = "{{ username }}";
+				</script>
 	    </body>
 	</html>
 {% endblock %}

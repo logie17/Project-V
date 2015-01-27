@@ -1,12 +1,9 @@
 package handles
 
 import (
-	"fmt"
 	"net/http"
 	"regexp"
 
-	"github.com/Sirupsen/logrus"
-	"github.com/agnivade/easy-scrypt"
 	"github.com/flosch/pongo2"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -33,27 +30,39 @@ func SignupGetHandler(store *sessions.CookieStore) gin.HandlerFunc {
 
 func SignupPostHandler(store *sessions.CookieStore) gin.HandlerFunc {
 	return func(c *gin.Context) {
+		ctx := c.MustGet("global_data").(pongo2.Context)
 		// lets checkout the form
 		var form SignupForm
 		c.BindWith(&form, binding.Form)
-		key, err := scrypt.DerivePassphrase(form.Password, 32)
-		if err != nil {
-			fmt.Errorf("Error returned: %s\n", err)
-		}
-		logrus.WithFields(logrus.Fields{
-			"FirstName":    form.FirstName,
-			"LastName":     form.LastName,
-			"Organization": form.Organization,
-			"Email":        form.Email,
-			"Password":     form.Password,
-			"Hash":         key,
-		}).Info("User signup")
-		// logie should do something about this
-		ctx := pongo2.Context{
-			"title": "Pair",
+		/*
+			key, err := scrypt.DerivePassphrase(form.Password, 32)
+			if err != nil {
+				fmt.Errorf("Scrypt error returned: %s\n", err)
+			}
+		*/
+
+		errors := validate(form)
+		if errors != nil {
+			for k, v := range errors {
+				ctx[k] = v
+			}
 		}
 		c.HTML(http.StatusOK, "templates/pages/signup.html", ctx)
 	}
+}
+
+func validate(form SignupForm) map[string]string {
+	var errors map[string]string = make(map[string]string)
+	if !stringValidator(form.FirstName, 1) {
+		errors["f_name"] = "Please enter a first name"
+	}
+	if !stringValidator(form.LastName, 1) {
+		errors["l_name"] = "Please enter a last name"
+	}
+	if !stringValidator(form.Organization, 1) {
+		errors["organization"] = "Please enter an organization"
+	}
+	return errors
 }
 
 func stringValidator(str string, length int) bool {
@@ -84,3 +93,14 @@ func emailValidator(email string) bool {
 		return false
 	}
 }
+
+/*
+	logrus.WithFields(logrus.Fields{
+		"FirstName":    form.FirstName,
+		"LastName":     form.LastName,
+		"Organization": form.Organization,
+		"Email":        form.Email,
+		"Password":     form.Password,
+		"Hash":         key,
+	}).Info("User signup")
+*/

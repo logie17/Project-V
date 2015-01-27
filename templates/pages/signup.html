@@ -5,14 +5,17 @@
 		<div class="row">
 			<div class="col-md-offset-4 col-md-4">
 				<form method="POST" class="login-form">
-				  <div class="form-group">
+				  <div class="form-group {% if f_name %}has-error{% endif %}">
 				    <input type="text" name="f_name" class="form-control" placeholder="First name"autofocus>
-				  </div>
-				  <div class="form-group">
+				  	<small class="text-danger {% if !f_name %}hidden{% endif %}">{{ f_name }}</small>
+					</div>
+				  <div class="form-group {% if l_name %}has-error{% endif %}">
 				    <input type="text" name="l_name" class="form-control" placeholder="Last name">
+				  	<small class="text-danger {% if !l_name %}hidden{% endif %}">{{ l_name }}</small>
 				  </div>
-				  <div class="form-group">
+				  <div class="form-group {% if organization %}has-error{% endif %}">
 				    <input type="text" name="organization" class="form-control" placeholder="Organization">
+				  	<small class="text-danger {% if !organization %}hidden{% endif %}">{{ organization }}</small>
 				  </div>
 				  <div class="form-group">
 				    <input type="email" name="email" class="form-control" placeholder="Email">

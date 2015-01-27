@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"regexp"
 
+	"github.com/Sirupsen/logrus"
 	"github.com/flosch/pongo2"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
@@ -34,12 +35,6 @@ func SignupPostHandler(store *sessions.CookieStore) gin.HandlerFunc {
 		// lets checkout the form
 		var form SignupForm
 		c.BindWith(&form, binding.Form)
-		/*
-			key, err := scrypt.DerivePassphrase(form.Password, 32)
-			if err != nil {
-				fmt.Errorf("Scrypt error returned: %s\n", err)
-			}
-		*/
 
 		errors := validate(form)
 		if errors != nil {
@@ -50,8 +45,18 @@ func SignupPostHandler(store *sessions.CookieStore) gin.HandlerFunc {
 			ctx["l_name_val"] = form.LastName
 			ctx["organization_val"] = form.Organization
 			ctx["email_val"] = form.Email
+			c.HTML(http.StatusOK, "templates/pages/signup.html", ctx)
 		}
-		c.HTML(http.StatusOK, "templates/pages/signup.html", ctx)
+		// form is valid: logie needs to save this shit somewhere
+		// also, you will need the below, thats their password
+		/*
+			key, err := scrypt.DerivePassphrase(form.Password, 32)
+			if err != nil {
+				fmt.Errorf("Scrypt error returned: %s\n", err)
+			}
+		*/
+		c.HTML(http.StatusOK, "templates/pages/pair.html", ctx)
+		logrus.Info("Yay! a new user signup")
 	}
 }
 
@@ -79,6 +84,8 @@ func validate(form SignupForm) map[string]string {
 	return errors
 }
 
+// stringValidator is a private function that checks the
+// length of a string
 func stringValidator(str string, length int) bool {
 	if len(str) >= length {
 		return true
@@ -87,6 +94,9 @@ func stringValidator(str string, length int) bool {
 	}
 }
 
+// emailValidator is a private function that
+// checks emails against a simple regex.  Note this
+// is not checking the RFC 5322 regex
 func emailValidator(email string) bool {
 	// did we get a string worth checking?
 	if len(email) > 0 {
@@ -107,14 +117,3 @@ func emailValidator(email string) bool {
 		return false
 	}
 }
-
-/*
-	logrus.WithFields(logrus.Fields{
-		"FirstName":    form.FirstName,
-		"LastName":     form.LastName,
-		"Organization": form.Organization,
-		"Email":        form.Email,
-		"Password":     form.Password,
-		"Hash":         key,
-	}).Info("User signup")
-*/

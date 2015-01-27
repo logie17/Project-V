@@ -46,6 +46,10 @@ func SignupPostHandler(store *sessions.CookieStore) gin.HandlerFunc {
 			for k, v := range errors {
 				ctx[k] = v
 			}
+			ctx["f_name_val"] = form.FirstName
+			ctx["l_name_val"] = form.LastName
+			ctx["organization_val"] = form.Organization
+			ctx["email_val"] = form.Email
 		}
 		c.HTML(http.StatusOK, "templates/pages/signup.html", ctx)
 	}
@@ -61,6 +65,16 @@ func validate(form SignupForm) map[string]string {
 	}
 	if !stringValidator(form.Organization, 1) {
 		errors["organization"] = "Please enter an organization"
+	}
+	if !stringValidator(form.Email, 1) {
+		errors["email"] = "Please enter a valid email address"
+	}
+	if !stringValidator(form.Password, 8) {
+		errors["password"] = "Please enter at least 8 characters"
+	} else {
+		if form.PasswordConfirm != form.Password {
+			errors["password_confirm"] = "Passwords must match"
+		}
 	}
 	return errors
 }

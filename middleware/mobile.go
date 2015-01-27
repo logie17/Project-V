@@ -14,7 +14,7 @@ func IsMobile() gin.HandlerFunc {
 		if detect.IsMobile() {
 			ctx.Update(pongo2.Context{"mobile": true})
 		}
-		c.Set("template_data", ctx)
+		c.Set("global_data", ctx)
 		c.Next()
 	}
 }

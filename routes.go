@@ -26,6 +26,7 @@ func main() {
 	}
 
 	router.Use(m.Logrus())
+	router.Use(gin.Recovery())
 	router.Use(m.IsMobile()) // this doesnt work yet
 	// this is how we can get global template data
 	//set := pongo2.NewSet("our web templates") // The idea behind sets is that you can create another set with other globals and configurations for mail templates or other kind of templates

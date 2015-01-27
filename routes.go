@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
 	"github.com/jinzhu/gorm"
@@ -11,7 +13,6 @@ import (
 	m "github.com/logie17/Project-V/middleware"
 	"github.com/logie17/Project-V/model"
 	_ "github.com/mattn/go-sqlite3"
-	"log"
 )
 
 var store *sessions.CookieStore = sessions.NewCookieStore([]byte("a-secret-string"))
@@ -31,6 +32,8 @@ func main() {
 		AllowOrigins: []string{"http://localhost:3001", "http://104.131.84.34:3001"},
 	}))
 
+	// DONT PANIC   http://top-science-fiction-novels.com/wp-content/uploads/2010/09/dontpanic_1024.jpeg
+	router.Use(gin.Recovery())
 	router.Use(m.IsMobile()) // this doesnt work yet
 	// this is how we can get global template data
 	//set := pongo2.NewSet("our web templates") // The idea behind sets is that you can create another set with other globals and configurations for mail templates or other kind of templates
@@ -54,6 +57,8 @@ func main() {
 	router.Run(fmt.Sprintf("[::]:%s", configuration.Port))
 }
 
+// setupDB is a private methon run on app start that connects to the database
+// and returns the connection.
 func setupDB(configuration *config.Configuration) (*gorm.DB, error) {
 	db, err := gorm.Open("sqlite3", configuration.Database)
 

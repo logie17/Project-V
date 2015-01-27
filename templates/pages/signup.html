@@ -3,8 +3,9 @@
 {% block content %}
 	<div class="container-fluid">
 		<div class="row">
-			<div class="col-md-offset-4 col-md-4">
-				<form method="POST" class="login-form">
+			<div class="col-md-offset-4 col-md-4 signup-form">
+				<h1>Sign up, feed me money</h1>
+				<form method="POST">
 				  <div class="form-group {% if f_name %}has-error{% endif %}">
 				    <input type="text" name="f_name" class="form-control" placeholder="First name" value="{{ f_name_val }}" autofocus>
 				  	<small class="text-danger {% if !f_name %}hidden{% endif %}">{{ f_name }}</small>

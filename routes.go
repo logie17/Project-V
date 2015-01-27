@@ -8,6 +8,7 @@ import (
 	"github.com/gorilla/sessions"
 	"github.com/jinzhu/gorm"
 	"github.com/logie17/Project-V/config"
+	"github.com/tommy351/gin-cors"
 	h "github.com/logie17/Project-V/handles"
 	m "github.com/logie17/Project-V/middleware"
 	"github.com/logie17/Project-V/model"
@@ -26,6 +27,11 @@ func main() {
 	}
 
 	router.Use(m.Logrus())
+
+	router.Use(cors.Middleware(cors.Options{
+		AllowOrigins: []string{"http://localhost:3001", "http://104.131.84.34:3001"},
+	}))
+
 	// DONT PANIC   http://top-science-fiction-novels.com/wp-content/uploads/2010/09/dontpanic_1024.jpeg
 	router.Use(gin.Recovery())
 	router.Use(m.IsMobile()) // this doesnt work yet
@@ -45,6 +51,8 @@ func main() {
 	router.POST("/signup", h.SignupPostHandler(store))
 
 	router.GET("/pair", m.IsAuthenticated(store), h.PairGetHandler)
+
+	router.GET("/webrtc", h.WebrtcGetHandler)
 
 	router.Run(fmt.Sprintf("[::]:%s", configuration.Port))
 }

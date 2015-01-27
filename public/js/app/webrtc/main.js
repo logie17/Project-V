@@ -8,7 +8,28 @@ var pc;
 var remoteStream;
 var turnReady;
 
-var pc_config = {'iceServers': [{'url': 'stun:stun.l.google.com:19302'}]};
+var pc_config = {'iceServers': [
+	{url: "stun:stun.l.google.com:19302"},
+  {url: "stun:stun1.l.google.com:19302"},
+  {url: "stun:stun2.l.google.com:19302"},
+  {url: "stun:stun3.l.google.com:19302"},
+  {url: "stun:stun4.l.google.com:19302"},
+  {url: "stun:23.21.150.121"},
+  {url: "stun:stun01.sipphone.com"},
+  {url: "stun:stun.ekiga.net"},
+  {url: "stun:stun.fwdnet.net"},
+  {url: "stun:stun.ideasip.com"},
+  {url: "stun:stun.iptel.org"},
+  {url: "stun:stun.rixtelecom.se"},
+  {url: "stun:stun.schlund.de"},
+  {url: "stun:stunserver.org"},
+  {url: "stun:stun.softjoys.com"},
+  {url: "stun:stun.voiparound.com"},
+  {url: "stun:stun.voipbuster.com"},
+  {url: "stun:stun.voipstunt.com"},
+  {url: "stun:stun.voxgratia.org"},
+  {url: "stun:stun.xten.com"}
+]};
 
 var pc_constraints = {'optional': [{'DtlsSrtpKeyAgreement': true}]};
 
@@ -19,77 +40,56 @@ var sdpConstraints = {'mandatory': {
 
 /////////////////////////////////////////////
 
-var room = location.pathname.substring(1);
-if (room === '') {
-//  room = prompt('Enter room name:');
-  room = 'foo';
-} else {
-  //
-}
-
-var socket = io.connect();
-
-if (room !== '') {
-  console.log('Create or join room', room);
-  socket.emit('create or join', room);
-}
-
-socket.on('created', function (room){
-  console.log('Created room ' + room);
-  isInitiator = true;
+var pubnub = PUBNUB.init({
+		publish_key:   'pub-c-7a98e152-6137-4575-822e-59cc48692d05',
+		subscribe_key: 'sub-c-da95bae6-a2ec-11e4-8dd9-02ee2ddab7fe',
+		origin:        'pubsub.pubnub.com',
+		uuid:          username
 });
 
-socket.on('full', function (room){
-  console.log('Room ' + room + ' is full');
-});
+pubnub.subscribe({                                      
+    channel : room,
+    message : function(message,env,channel){
 
-socket.on('join', function (room){
-  console.log('Another peer made a request to join room ' + room);
-  console.log('This peer is the initiator of room ' + room + '!');
-  isChannelReady = true;
-});
+				//if (!isInitiator || !isChannelReady) {
+					pubnub.here_now({
+					    channel : room,
+					    callback : function(m){
+					        console.log(JSON.stringify(m));
+									
+					        if(m.occupancy === 1) { 
+					            console.log('Created room ' + room);
+					            isInitiator = true;
+					        } else if (m.occupancy > 1) {
+					            isChannelReady = true;
+					        }
 
-socket.on('joined', function (room){
-  console.log('This peer has joined room ' + room);
-  isChannelReady = true;
-});
+        					if (message === 'got user media') {
+        						  maybeStart();
+        					} else if (message.type === 'offer') {
+        					    if (!isInitiator && !isStarted) {
+        					      maybeStart();
+        					    }
+        					    pc.setRemoteDescription(new RTCSessionDescription(message));
+        					    doAnswer();
+        					} else if (message.type === 'answer' && isStarted) {
+        					    pc.setRemoteDescription(new RTCSessionDescription(message));
+        					} else if (message.type === 'candidate' && isStarted) {
+        					    var candidate = new RTCIceCandidate({
+        					        sdpMLineIndex: message.label,
+        					        candidate: message.candidate
+        					    });
+        					    pc.addIceCandidate(candidate);
+        					} else if (message === 'bye' && isStarted) {
+        					    handleRemoteHangup();
+        					}
 
-socket.on('log', function (array){
-  console.log.apply(console, array);
-});
-
-////////////////////////////////////////////////
-
-function sendMessage(message){
-	console.log('Client sending message: ', message);
-  // if (typeof message === 'object') {
-  //   message = JSON.stringify(message);
-  // }
-  socket.emit('message', message);
-}
-
-socket.on('message', function (message){
-  console.log('Client received message:', message);
-  if (message === 'got user media') {
-  	maybeStart();
-  } else if (message.type === 'offer') {
-    if (!isInitiator && !isStarted) {
-      maybeStart();
+					    }
+					});
+			//}
     }
-    pc.setRemoteDescription(new RTCSessionDescription(message));
-    doAnswer();
-  } else if (message.type === 'answer' && isStarted) {
-    pc.setRemoteDescription(new RTCSessionDescription(message));
-  } else if (message.type === 'candidate' && isStarted) {
-    var candidate = new RTCIceCandidate({
-      sdpMLineIndex: message.label,
-      candidate: message.candidate
-    });
-    pc.addIceCandidate(candidate);
-  } else if (message === 'bye' && isStarted) {
-    handleRemoteHangup();
-  }
-});
+    //connect: pub
+})
 
 ////////////////////////////////////////////////////
 
@@ -100,7 +100,10 @@ function handleUserMedia(stream) {
   console.log('Adding local stream.');
   localVideo.src = window.URL.createObjectURL(stream);
   localStream = stream;
-  sendMessage('got user media');
+  pubnub.publish({
+     channel: room,        
+     message: 'got user media'
+ });
   if (isInitiator) {
     maybeStart();
   }
@@ -110,10 +113,10 @@ function handleUserMediaError(error){
   console.log('getUserMedia error: ', error);
 }
 
-var constraints = {video: true, audio: true};
-getUserMedia(constraints, handleUserMedia, handleUserMediaError);
 
+var constraints = {video: true, audio: true};
 console.log('Getting user media with constraints', constraints);
+getUserMedia(constraints, handleUserMedia, handleUserMediaError);
 
 if (location.hostname != "localhost") {
   requestTurn('https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913');
@@ -124,7 +127,6 @@ function maybeStart() {
     createPeerConnection();
     pc.addStream(localStream);
     isStarted = true;
-    console.log('isInitiator', isInitiator);
     if (isInitiator) {
       doCall();
     }
@@ -132,7 +134,13 @@ function maybeStart() {
 }
 
 window.onbeforeunload = function(e){
-	sendMessage('bye');
+  pubnub.publish({
+     channel: room,        
+     message: 'bye'
+  });
+  pubnub.unsubscribe({
+     channel: room 
+  });
 }
 
 /////////////////////////////////////////////////////////
@@ -154,11 +162,15 @@ function createPeerConnection() {
 function handleIceCandidate(event) {
   console.log('handleIceCandidate event: ', event);
   if (event.candidate) {
-    sendMessage({
-      type: 'candidate',
-      label: event.candidate.sdpMLineIndex,
-      id: event.candidate.sdpMid,
-      candidate: event.candidate.candidate});
+      pubnub.publish({
+           channel: room,        
+           message: {
+               type: 'candidate',
+               label: event.candidate.sdpMLineIndex,
+               id: event.candidate.sdpMid,
+               candidate: event.candidate.candidate
+           }
+      });
   } else {
     console.log('End of candidates.');
   }
@@ -189,7 +201,10 @@ function setLocalAndSendMessage(sessionDescription) {
   sessionDescription.sdp = preferOpus(sessionDescription.sdp);
   pc.setLocalDescription(sessionDescription);
   console.log('setLocalAndSendMessage sending message' , sessionDescription);
-  sendMessage(sessionDescription);
+  pubnub.publish({
+     channel: room,        
+     message: sessionDescription
+  });
 }
 
 function requestTurn(turn_url) {
@@ -234,7 +249,13 @@ function handleRemoteStreamRemoved(event) {
 function hangup() {
   console.log('Hanging up.');
   stop();
-  sendMessage('bye');
+  pubnub.publish({
+     channel: room,        
+     message: 'bye'
+  });
+  pubnub.unsubscribe({
+     channel: room 
+  });
 }
 
 function handleRemoteHangup() {

@@ -3,16 +3,17 @@ package main
 import (
 	"fmt"
 	"log"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
 	"github.com/jinzhu/gorm"
 	"github.com/logie17/Project-V/config"
-	"github.com/tommy351/gin-cors"
 	h "github.com/logie17/Project-V/handles"
 	m "github.com/logie17/Project-V/middleware"
 	"github.com/logie17/Project-V/model"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/tommy351/gin-cors"
 )
 
 var store *sessions.CookieStore = sessions.NewCookieStore([]byte("a-secret-string"))
@@ -54,7 +55,11 @@ func main() {
 
 	router.GET("/webrtc", h.WebrtcGetHandler)
 
-	router.Run(fmt.Sprintf("[::]:%s", configuration.Port))
+	//router.Run(fmt.Sprintf("[::]:%s", configuration.Port))
+	runErr := http.ListenAndServeTLS(fmt.Sprintf("[::]:%s", configuration.Port), "tls/server.crt", "tls/server.key", router)
+	if runErr != nil {
+		log.Fatal(runErr)
+	}
 }
 
 // setupDB is a private methon run on app start that connects to the database

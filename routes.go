@@ -30,7 +30,7 @@ func main() {
 	router.Use(m.Logrus())
 
 	router.Use(cors.Middleware(cors.Options{
-		AllowOrigins: []string{"http://localhost:3001", "http://104.131.84.34:3001"},
+		AllowOrigins: []string{"http://localhost:3001", "https://104.131.84.34:3001"},
 	}))
 
 	// DONT PANIC   http://top-science-fiction-novels.com/wp-content/uploads/2010/09/dontpanic_1024.jpeg

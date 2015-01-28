@@ -46,6 +46,7 @@ func SignupPostHandler(store *sessions.CookieStore) gin.HandlerFunc {
 			ctx["organization_val"] = form.Organization
 			ctx["email_val"] = form.Email
 			c.HTML(http.StatusOK, "templates/pages/signup.html", ctx)
+			return
 		}
 		// form is valid: logie needs to save this shit somewhere
 		// also, you will need the below, thats their password

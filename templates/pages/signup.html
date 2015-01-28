@@ -5,30 +5,30 @@
 		<div class="row">
 			<div class="col-md-offset-4 col-md-4 signup-form">
 				<h1>Sign up, feed me money</h1>
-				<form method="POST">
+				<form method="POST" novalidate>
 				  <div class="form-group {% if f_name %}has-error{% endif %}">
-				    <input type="text" name="f_name" class="form-control" placeholder="First name" value="{{ f_name_val }}" autofocus>
-				  	<small class="text-danger {% if !f_name %}hidden{% endif %}">{{ f_name }}</small>
+				    <input type="text" name="f_name" class="form-control" placeholder="First name" value="{{ f_name_val }}" autofocus required>
+				  	<small class="text-danger {% if !f_name %}hidden{% endif %}">Please enter a first name</small>
 					</div>
 				  <div class="form-group {% if l_name %}has-error{% endif %}">
-				    <input type="text" name="l_name" class="form-control" placeholder="Last name" value="{{ l_name_val }}">
-				  	<small class="text-danger {% if !l_name %}hidden{% endif %}">{{ l_name }}</small>
+				    <input type="text" name="l_name" class="form-control" placeholder="Last name" value="{{ l_name_val }}" required>
+				  	<small class="text-danger {% if !l_name %}hidden{% endif %}">Please enter a last name</small>
 				  </div>
 				  <div class="form-group {% if organization %}has-error{% endif %}">
-				    <input type="text" name="organization" class="form-control" placeholder="Organization" value="{{ organization_val }}">
-				  	<small class="text-danger {% if !organization %}hidden{% endif %}">{{ organization }}</small>
+				    <input type="text" name="organization" class="form-control" placeholder="Organization" value="{{ organization_val }}" required>
+				  	<small class="text-danger {% if !organization %}hidden{% endif %}">Please enter an organization</small>
 				  </div>
 				  <div class="form-group {% if email %}has-error{% endif %}">
-				    <input type="email" name="email" class="form-control" placeholder="Email" value="{{ email_val }}">
-				  	<small class="text-danger {% if !email %}hidden{% endif %}">{{ email }}</small>
+				    <input type="email" name="email" class="form-control" placeholder="Email" value="{{ email_val }}" required>
+				  	<small class="text-danger {% if !email %}hidden{% endif %}">Please enter a valid email address</small>
 				  </div>
 				  <div class="form-group {% if password %}has-error{% endif %}">
 				    <input type="password" name="password" class="form-control" placeholder="Password">
-				  	<small class="text-danger {% if !password %}hidden{% endif %}">{{ password }}</small>
+				  	<small class="text-danger {% if !password %}hidden{% endif %}">Please enter at least 8 characters</small>
 				  </div>
 				  <div class="form-group {% if password_confirm %}has-error{% endif %}">
 				    <input type="password" name="password_confirm" class="form-control" placeholder="Confirm Password">
-				  	<small class="text-danger {% if !password_confirm %}hidden{% endif %}">{{ password_confirm }}</small>
+				  	<small class="text-danger {% if !password_confirm %}hidden{% endif %}">Passwords must match</small>
 				  </div>
 				  <button type="submit" class="btn btn-block btn-primary">Submit</button>
 				  <div class="form-group text-center forgot">
@@ -38,4 +38,7 @@
 			</div>
 		</div>
 	</div>
+{% endblock %}
+{% block pagejs %}
+	require(["app/validate"], function( ) {});
 {% endblock %}

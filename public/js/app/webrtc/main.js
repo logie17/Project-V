@@ -44,7 +44,8 @@ var pubnub = PUBNUB.init({
 		publish_key:   'pub-c-7a98e152-6137-4575-822e-59cc48692d05',
 		subscribe_key: 'sub-c-da95bae6-a2ec-11e4-8dd9-02ee2ddab7fe',
 		origin:        'pubsub.pubnub.com',
-		uuid:          username
+		uuid:          username,
+		ssl:           true
 });
 
 pubnub.subscribe({                                      

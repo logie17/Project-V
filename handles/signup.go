@@ -36,8 +36,6 @@ func SignupPostHandler(store *sessions.CookieStore) gin.HandlerFunc {
 		var form SignupForm
 		c.BindWith(&form, binding.Form)
 
-		println("12341234")
-
 		errors := validate(form)
 		if errors != nil {
 			for k, v := range errors {
@@ -49,8 +47,6 @@ func SignupPostHandler(store *sessions.CookieStore) gin.HandlerFunc {
 			ctx["email_val"] = form.Email
 			ctx["password"] = form.Password
 			ctx["password_confirm"] = form.PasswordConfirm
-			println("sdfsdf")
-			logrus.Info("error")
 			c.HTML(http.StatusOK, "templates/pages/signup.html", ctx)
 			return
 		}

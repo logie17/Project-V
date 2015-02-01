@@ -1,7 +1,7 @@
 [Service]
 ExecStart=/home/codeship/go/src/github.com/logie17/Project-V/Project-V
 WorkingDirectory=/home/codeship/go/src/github.com/logie17/Project-V/
-StandardOutput=syslog
+StandardOutput=journal
 Restart=always
 SyslogIdentifier=projectv
 User=nobody

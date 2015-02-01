@@ -36,7 +36,7 @@ func main() {
 			"https://104.131.84.34:3001",
 			"http://[2604:a880:800:10::2a9:2001]:3001",
 			"https://[2604:a880:800:10::2a9:2001]:3001",
-			"https://computeengineondemand.appspot.com"
+			"https://computeengineondemand.appspot.com",
 		},
 	}))
 

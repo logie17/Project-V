@@ -37,6 +37,7 @@ func main() {
 			"http://[2604:a880:800:10::2a9:2001]:3001",
 			"https://[2604:a880:800:10::2a9:2001]:3001",
 			"https://computeengineondemand.appspot.com",
+			"https://api.xirsys.com",
 		},
 	}))
 

@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gorilla/sessions"
@@ -32,7 +31,7 @@ func main() {
 	router.Use(cors.Middleware(cors.Options{
 		AllowOrigins: []string{
 			"http://localhost:3001",
-			"http://104.131.84.34:3001", 
+			"http://104.131.84.34:3001",
 			"https://104.131.84.34:3001",
 			"http://[2604:a880:800:10::2a9:2001]:3001",
 			"https://[2604:a880:800:10::2a9:2001]:3001",
@@ -62,11 +61,13 @@ func main() {
 
 	router.GET("/webrtc", h.WebrtcGetHandler)
 
-	//router.Run(fmt.Sprintf("[::]:%s", configuration.Port))
-	runErr := http.ListenAndServeTLS(fmt.Sprintf("[::]:%s", configuration.Port), "tls/server.crt", "tls/server.key", router)
-	if runErr != nil {
-		log.Fatal(runErr)
-	}
+	router.Run(fmt.Sprintf("[::]:%s", configuration.Port))
+	/*
+		runErr := http.ListenAndServeTLS(fmt.Sprintf("[::]:%s", configuration.Port), "tls/server.crt", "tls/server.key", router)
+		if runErr != nil {
+			log.Fatal(runErr)
+		}
+	*/
 }
 
 // setupDB is a private methon run on app start that connects to the database

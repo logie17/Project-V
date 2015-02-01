@@ -120,7 +120,8 @@ console.log('Getting user media with constraints', constraints);
 getUserMedia(constraints, handleUserMedia, handleUserMediaError);
 
 if (location.hostname != "localhost") {
-  requestTurn('https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913');
+  //Dont request for turn server for now
+  //requestTurn('https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913');
 }
 
 function maybeStart() {

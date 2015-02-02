@@ -33,6 +33,34 @@ var pc_config = {'iceServers': [
 
 var pc_constraints = {'optional': [{'DtlsSrtpKeyAgreement': true}]};
 
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// Get STUN / TURN servers from XirSys
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+var iceConfig;
+$.ajax({
+  type: "POST",
+  dataType: "json",
+  url: "https://api.xirsys.com/getIceServers",
+  data: {
+      ident: "vkajjam",
+      secret: "79dde7f6-60c0-48a1-8d6d-4b9a229d6a62",
+      domain: "104.131.84.34",
+      application: "default",
+      room: "default",
+      secure: 1
+  },
+  success: function (data, status) {
+      // data.d is where the iceServers object lives
+      iceConfig = data.d.iceServers;
+			console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!");
+      console.log(iceConfig);
+  },
+  error: function(XMLHttpRequest, textStatus, errorThrown) {
+     alert("!!!!!!!!!!! Error getting Xir stun servers !!!!!!!!!!!");
+  },
+  async: false
+});
+
 // Set up audio and video regardless of what devices are present.
 var sdpConstraints = {'mandatory': {
   'OfferToReceiveAudio':true,
@@ -120,32 +148,6 @@ console.log('Getting user media with constraints', constraints);
 getUserMedia(constraints, handleUserMedia, handleUserMediaError);
 
 if (location.hostname != "localhost") {
-  
-// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-// Get STUN / TURN servers from XirSys
-// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-	var iceConfig;
-	$.ajax({
-    type: "POST",
-    dataType: "json",
-    url: "https://api.xirsys.com/getIceServers",
-    data: {
-        ident: "vkajjam",
-        secret: "79dde7f6-60c0-48a1-8d6d-4b9a229d6a62",
-        domain: "104.131.84.34",
-        application: "default",
-        room: "default",
-        secure: 1
-    },
-    success: function (data, status) {
-        // data.d is where the iceServers object lives
-        //iceConfig = data.d.iceServers;
-				console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~!!!!!!!!!!!");
-        console.log(iceConfig);
-    },
-    async: false
-	});
-
   //Dont request for turn server for now
   //requestTurn('https://computeengineondemand.appspot.com/turn?username=41784574&key=4080218913');
 }

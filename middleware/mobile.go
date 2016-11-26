@@ -10,7 +10,7 @@ func IsMobile() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		detect := mobiledetect.NewMobileDetect(c.Request, nil)
 		// We'll have to define this further upstream
-		ctx := pongo2.Context{"mobile": false}
+		ctx := pongo2.Context{"mobile": true}
 		if detect.IsMobile() {
 			ctx.Update(pongo2.Context{"mobile": true})
 		}
